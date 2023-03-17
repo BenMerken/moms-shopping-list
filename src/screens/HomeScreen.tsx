@@ -1,20 +1,21 @@
-import {StyleSheet, Text, View} from 'react-native'
+import {StyleSheet, Text} from 'react-native'
 
-import theme from '@utils/theme'
+import {SafeAreaContainer} from '@components/index'
+import text from '@utils/text'
 
 const styles = StyleSheet.create({
-	container: {
-		backgroundColor: theme.light.background,
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center'
+	screenTitle: {
+		...text.screenTitle,
+		alignSelf: 'center'
 	}
 })
 
 const HomeScreen = () => {
-	return <View style={styles.container}>
-		<Text>Mom's Shopping List</Text>
-	</View>
+	return (
+		<SafeAreaContainer>
+			<Text style={styles.screenTitle}>Mijn Boodschappenlijstjes</Text>
+		</SafeAreaContainer>
+	)
 }
 
 export default HomeScreen
