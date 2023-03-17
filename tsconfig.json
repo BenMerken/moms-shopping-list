@@ -1,0 +1,21 @@
+{
+	"extends": "expo/tsconfig.base",
+	"compilerOptions": {
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true,
+		"incremental": true,
+		"sourceMap": true,
+		"baseUrl": "src",
+		"noImplicitAny": true,
+		"paths": {
+			"@assets/*": ["../assets/*"],
+			"@components/*": ["components/*"],
+			"@hooks/*": ["hooks/*"],
+			"@navigation/*": ["navigation/*"],
+			"@screens/*": ["screens/*"],
+			"@types/*": ["types/*"],
+			"@utils/*": ["utils/*"]
+		}
+	}
+}

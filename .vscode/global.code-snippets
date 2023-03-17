@@ -1,0 +1,95 @@
+{
+	// Place your workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+	// Placeholders with the same ids are connected.
+	// Example:
+	"rfc": {
+		"prefix": "rfc",
+		"body": [
+			"const ${1:Component} = () => {",
+			"	return (",
+			"		<div>",
+			"            $0",
+			"		</div>",
+			"	)",
+			"}"
+		],
+		"description": "React Functional Component"
+	},
+	"rfcp": {
+		"prefix": "rfcp",
+		"body": [
+			"type ${1:Component}Props = {",
+			"    ${2:customProp}: ${3:string}",
+			"}",
+			"",
+			"const ${1:Component} = ({${2:customProp}}: ${1:Component}Props) => {",
+			"	return (",
+			"		<div>",
+			"            {${2:customProp}}",
+			"		</div>",
+			"	)",
+			"}"
+		],
+		"description": "React Functional Component with props"
+	},
+	"rfcs": {
+		"prefix": "rfcs",
+		"body": [
+			"const Styled${1:Component} = styled.${2:div}`",
+			"    $0",
+			"`",
+			"",
+			"const ${1:Component} = () => {",
+			"	return (",
+			"		<Styled${1:Component}>",
+			"",
+			"		</Styled${1:Component}>",
+			"	)",
+			"}"
+		],
+		"description": "React Functional Components with Styled Component"
+	},
+	"rfcsp": {
+		"prefix": "rfcsp",
+		"body": [
+			"const Styled${1:Component} = styled.${4:div}`",
+			"    $0",
+			"`",
+			"",
+			"type ${1:Component}Props = {",
+			"    ${2:customProp}: ${3:string}",
+			"}",
+			"",
+			"const ${1:Component} = ({${2:customProp}}: ${1:Component}Props) => {",
+			"	return (",
+			"		<Styled${1:Component}>",
+			"            {${2:customProp}}",
+			"		</Styled${1:Component}>",
+			"	)",
+			"}"
+		],
+		"description": "React Functional Components with Styled Component and props"
+	},
+	"nxtp": {
+		"prefix": "nxtp",
+		"body": [
+			"import type {NextPage} from 'next'",
+			"",
+			"const ${1:Page}: NextPage = () => {",
+			"	return (",
+			"		<div>",
+			"            $0",
+			"		</div>",
+			"	)",
+			"}",
+			"",
+			"export default ${1:Page}",
+			""
+		],
+		"description": "Next.js Page Component used within the page directory"
+	}
+}

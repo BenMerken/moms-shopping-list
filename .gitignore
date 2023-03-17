@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# expo
+.expo/
+
+# build
+dist/
+web-build/
+
+# certs
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# debug
+npm-debug.*
+
+# macOS
+.DS_Store

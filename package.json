@@ -1,0 +1,56 @@
+{
+  "name": "moms-shopping-list",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/App.tsx",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@react-navigation/native": "^6.0.8",
+    "@react-navigation/native-stack": "^6.5.0",
+    "@types/styled-components": "^5.1.24",
+    "expo": "^48.0.7",
+    "expo-splash-screen": "^0.18.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "^0.71.3",
+    "react-native-safe-area-context": "4.5.0",
+    "styled-components": "^5.3.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@types/react": "^18.0.28",
+    "@types/react-native": "^0.71.3",
+    "@types/styled-components-react-native": "^5.1.3",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-plugin-styled-components": "^2.0.6",
+    "husky": "^7.0.4",
+    "typescript": "^4.9.4"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "eslint"
+    ],
+    "src/**/*.{js,ts,tsx,json,css,scss,md,eslintrc,prettierrc}": [
+      "prettier --write"
+    ]
+  },
+  "_moduleAliases": {
+    "@assets": "assets",
+    "@components": "src/components",
+    "@hooks": "src/hooks",
+    "@navigation": "src/navigation",
+    "@screens": "src/screens",
+    "@types": "src/types",
+    "@utils": "src/utils"
+  },
+  "volta": {
+    "node": "18.15.0"
+  }
+}
