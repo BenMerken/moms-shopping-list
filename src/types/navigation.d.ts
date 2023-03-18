@@ -1,15 +1,12 @@
-declare global {
-	namespace ReactNavigation {
-		interface RootParamList extends RootStackParamList {}
+declare type StackParamList = {
+	Home: undefined
+	List: {
+		listId: string
 	}
 }
 
-declare type StackParamList = {
-	Home: undefined
-}
-
-declare type StackScreenProps<Screen extends keyof RootStackParamList> =
+declare type StackScreenProps<Screen extends keyof StackParamList> =
 	import('@react-navigation/native-stack').NativeStackScreenProps<
-		RootStackParamList,
+		StackParamList,
 		Screen
 	>

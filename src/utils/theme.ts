@@ -7,14 +7,26 @@ const theme = {
 		background: '#fff',
 		tint: tintColorLight,
 		tabIconDefault: '#f00',
-		tabIconSelected: tintColorLight
+		tabIconSelected: tintColorLight,
+		buttonPrimary: '#006d5b' // Teal green
 	},
 	dark: {
 		text: '#fff',
 		background: '#000',
 		tint: tintColorDark,
 		tabIconDefault: '#f00',
-		tabIconSelected: tintColorDark
+		tabIconSelected: tintColorDark,
+		buttonPrimary: '#008080' // Teal blue
+	},
+	dropShadow: {
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5
 	}
 }
 

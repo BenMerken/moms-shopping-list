@@ -6,7 +6,7 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {ColorSchemeName} from 'react-native'
 
-import HomeScreen from '@screens/HomeScreen'
+import {HomeScreen, ListScreen} from '@screens/index'
 
 const Stack = createNativeStackNavigator<StackParamList>()
 
@@ -16,6 +16,11 @@ const StackNavigator = () => {
 			<Stack.Screen
 				name='Home'
 				component={HomeScreen}
+				options={{headerShown: false}}
+			/>
+			<Stack.Screen
+				name='List'
+				component={ListScreen}
 				options={{headerShown: false}}
 			/>
 		</Stack.Navigator>
