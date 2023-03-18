@@ -35,7 +35,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: 'rgba(0, 0, 0, 0.2)'
+	},
+	modalTopRow: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignContent: 'center'
 	},
 	modalContent: {
 		padding: 16,
@@ -52,6 +56,11 @@ const HomeScreen = () => {
 	const [openNewListModal, setOpenListModal] = useState(false)
 
 	const [newListName, setNewListName] = useState('')
+
+	const onCloseModal = () => {
+		setOpenListModal(false)
+		setNewListName('')
+	}
 
 	return (
 		<SafeAreaContainer>
@@ -71,7 +80,18 @@ const HomeScreen = () => {
 			<Modal animationType='slide' transparent visible={openNewListModal}>
 				<View style={styles.modalBackground}>
 					<View style={styles.modalContent}>
-						<Text style={{...text.subtitle}}>Nieuw Lijstje</Text>
+						<View style={styles.modalTopRow}>
+							<Text style={{...text.subtitle}}>
+								Nieuw Lijstje
+							</Text>
+							<TouchableOpacity onPress={onCloseModal}>
+								<FontAwesome
+									name='close'
+									color='#000'
+									size={24}
+								/>
+							</TouchableOpacity>
+						</View>
 						<CustomTextInput
 							inputGroupStyle={styles.input}
 							label='Naam lijstje'
