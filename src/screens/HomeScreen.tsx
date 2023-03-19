@@ -40,6 +40,16 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		...theme.dropShadow
 	},
+	noGroceryListsPlaceholder: {
+		flexGrow: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		gap: 32
+	},
+	placeholderText: {
+		width: Dimensions.get('screen').width * 0.8,
+		textAlign: 'center'
+	},
 	modalBackground: {
 		flex: 1,
 		justifyContent: 'center',
@@ -188,15 +198,11 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 					renderItem={_groceryListItem}
 				/>
 			) : (
-				<View
-					style={{
-						flex: 1,
-						justifyContent: 'center',
-						alignItems: 'center'
-					}}
-				>
-					<Text>Er zijn geen boodschappenlijstjes opgeslagen.</Text>
-					<Text>
+				<View style={styles.noGroceryListsPlaceholder}>
+					<Text style={styles.placeholderText}>
+						Er zijn geen boodschappenlijstjes opgeslagen.
+					</Text>
+					<Text style={styles.placeholderText}>
 						Je kan een nieuw lijstje maken, door op de '+' knop te
 						drukken.
 					</Text>
