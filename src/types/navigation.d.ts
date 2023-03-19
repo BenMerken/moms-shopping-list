@@ -2,6 +2,7 @@ declare type StackParamList = {
 	Home: undefined
 	List: {
 		listUuid: string
+		listName: string
 	}
 }
 

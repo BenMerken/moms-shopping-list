@@ -16,12 +16,12 @@ const StackNavigator = () => {
 			<Stack.Screen
 				name='Home'
 				component={HomeScreen}
-				options={{headerShown: false}}
+				options={{title: 'Mijn Boodschappenlijstjes'}}
 			/>
 			<Stack.Screen
 				name='List'
 				component={ListScreen}
-				options={{headerShown: false}}
+				options={({route}) => ({title: route.params.listName})}
 			/>
 		</Stack.Navigator>
 	)

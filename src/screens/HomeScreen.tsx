@@ -85,7 +85,10 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 			<TouchableOpacity
 				style={styles.groceryListItem}
 				onPress={() =>
-					navigation.navigate('List', {listUuid: item.uuid})
+					navigation.navigate('List', {
+						listUuid: item.uuid,
+						listName: item.name
+					})
 				}
 			>
 				<Text>{item.name}</Text>
@@ -108,7 +111,10 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 			}
 
 			await AsyncStorage.setItem(newListUuid, JSON.stringify(newList))
-			navigation.navigate('List', {listUuid: newListUuid})
+			navigation.navigate('List', {
+				listUuid: newListUuid,
+				listName: newListName
+			})
 		} catch (error) {
 			Alert.alert('Het lijstje kon niet worden opgeslagen.')
 		}
@@ -132,7 +138,6 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 
 	return (
 		<SafeAreaContainer>
-			<Text style={styles.screenTitle}>Mijn Boodschappenlijstjes</Text>
 			{loadingGroceryLists ? (
 				<Text>Laden...</Text>
 			) : groceryLists.length ? (
