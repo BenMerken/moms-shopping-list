@@ -68,10 +68,16 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		gap: 4,
+		paddingTop: 40,
 		padding: 16,
 		width: Dimensions.get('screen').width * 0.8,
 		backgroundColor: 'white',
 		...theme.dropShadow
+	},
+	listItemCloseIcon:{
+		position: 'absolute',
+		top: 16,
+		right: 16,
 	}
 })
 
@@ -83,19 +89,32 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 
 	const [openNewListModal, setOpenListModal] = useState(false)
 
+	const removeListItem = async (uuid: string) => {
+		await AsyncStorage.removeItem(uuid, () => {
+			setGroceryLists([
+				...groceryLists.filter((list) => list.uuid !== uuid)
+			])
+		})
+	}
+
 	const _groceryListItem = ({item}: GroceryListItemProps) => {
 		const createdAt = new Date(item.createdAt || 0)
 
 		return (
 			<TouchableOpacity
 				style={styles.groceryListItem}
-				onPress={() =>
+				onPress={(e) => {
+					e.preventDefault()
+					e.stopPropagation()
 					navigation.navigate('List', {
 						listUuid: item.uuid,
 						listName: item.name
 					})
-				}
+				}}
 			>
+				<TouchableOpacity style={styles.listItemCloseIcon} onPress={() => removeListItem(item.uuid)}>
+					<FontAwesome name='close' color='#000' size={16} />
+				</TouchableOpacity>
 				<Text>{item.name},</Text>
 				<Text>
 					aangemaakt op{' '}
