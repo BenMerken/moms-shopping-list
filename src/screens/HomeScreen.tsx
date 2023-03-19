@@ -1,17 +1,26 @@
 import {FontAwesome} from '@expo/vector-icons'
-import {useState} from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {useEffect, useState} from 'react'
 import {
+	Alert,
 	Button,
+	Dimensions,
+	FlatList,
 	Modal,
 	StyleSheet,
 	Text,
 	TouchableOpacity,
 	View
 } from 'react-native'
+import uuid from 'react-native-uuid'
 
 import {CustomTextInput, SafeAreaContainer} from '@components/index'
 import text from '@utils/text'
 import theme from '@utils/theme'
+
+type GroceryListItemProps = {
+	item: GroceryList
+}
 
 const styles = StyleSheet.create({
 	screenTitle: {
@@ -34,7 +43,7 @@ const styles = StyleSheet.create({
 	modalBackground: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	modalTopRow: {
 		flexDirection: 'row',
@@ -49,22 +58,104 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		marginBottom: 16
+	},
+	groceryLists: {
+		flexGrow: 1,
+		alignItems: 'center',
+		gap: 8
+	},
+	groceryListItem: {
+		backgroundColor: 'white',
+		padding: 16,
+		width: Dimensions.get('screen').width * 0.8,
+		...theme.dropShadow
 	}
 })
 
-const HomeScreen = () => {
-	const [openNewListModal, setOpenListModal] = useState(false)
+const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
+	const [groceryLists, setGroceryLists] = useState<GroceryList[]>([])
+	const [loadingGroceryLists, setLoadingGroceryLists] = useState(true)
 
 	const [newListName, setNewListName] = useState('')
+
+	const [openNewListModal, setOpenListModal] = useState(false)
+
+	const _groceryListItem = ({item}: GroceryListItemProps) => {
+		return (
+			<TouchableOpacity
+				style={styles.groceryListItem}
+				onPress={() =>
+					navigation.navigate('List', {listUuid: item.uuid})
+				}
+			>
+				<Text>{item.name}</Text>
+			</TouchableOpacity>
+		)
+	}
 
 	const onCloseModal = () => {
 		setOpenListModal(false)
 		setNewListName('')
 	}
 
+	const createNewShoppingList = async () => {
+		try {
+			const newListUuid = uuid.v4() as string
+			const newList: GroceryList = {
+				uuid: newListUuid,
+				name: newListName,
+				items: []
+			}
+
+			await AsyncStorage.setItem(newListUuid, JSON.stringify(newList))
+			navigation.navigate('List', {listUuid: newListUuid})
+		} catch (error) {
+			Alert.alert('Het lijstje kon niet worden opgeslagen.')
+		}
+	}
+
+	useEffect(() => {
+		const getGroceryListsFromStorage = async () => {
+			const groceryListsKeys = await AsyncStorage.getAllKeys()
+			const groceryListsFromStorage = (await AsyncStorage.multiGet(
+				groceryListsKeys
+			).then((storage) =>
+				storage.map((d) => d[1] && JSON.parse(d[1]))
+			)) as GroceryList[]
+
+			setGroceryLists(groceryListsFromStorage)
+		}
+
+		getGroceryListsFromStorage()
+		setLoadingGroceryLists(false)
+	}, [])
+
 	return (
 		<SafeAreaContainer>
 			<Text style={styles.screenTitle}>Mijn Boodschappenlijstjes</Text>
+			{loadingGroceryLists ? (
+				<Text>Laden...</Text>
+			) : groceryLists.length ? (
+				<FlatList
+					contentContainerStyle={styles.groceryLists}
+					data={groceryLists}
+					renderItem={_groceryListItem}
+				/>
+			) : (
+				<View
+					style={{
+						flex: 1,
+						justifyContent: 'center',
+						alignItems: 'center'
+					}}
+				>
+					<Text>Er zijn geen boodschappenlijstjes opgeslagen.</Text>
+					<Text>
+						Je kan een nieuw lijstje maken, door op de '+' knop te
+						drukken.
+					</Text>
+				</View>
+			)}
 			<TouchableOpacity
 				style={styles.addButton}
 				onPress={() => {
@@ -103,6 +194,7 @@ const HomeScreen = () => {
 							title='Lijstje aanmaken'
 							disabled={!newListName}
 							color={theme.light.buttonPrimary}
+							onPress={createNewShoppingList}
 						/>
 					</View>
 				</View>

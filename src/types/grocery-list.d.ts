@@ -1,5 +1,7 @@
-declare type GroceryListItem = {
-	name: string
-}
+declare type GroceryListItem = string
 
-declare type GroceryList = GroceryListItem[]
+declare type GroceryList = {
+	uuid: string
+	name: string
+	items?: GroceryListItem[]
+}

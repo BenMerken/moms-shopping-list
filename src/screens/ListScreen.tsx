@@ -1,3 +1,5 @@
+import {useAsyncStorage} from '@react-native-async-storage/async-storage'
+import {useEffect, useState} from 'react'
 import {FlatList, Text, View} from 'react-native'
 
 import {SafeAreaContainer} from '@components/index'
@@ -6,24 +8,35 @@ type ListItemProps = {
 	item: GroceryListItem
 }
 
-const _listItem = ({item}: ListItemProps) => {
-	return (
-		<View>
-			<Text>{item.name}</Text>
-		</View>
+const ListScreen = ({route}: StackScreenProps<'List'>) => {
+	const [groceryList, setGroceryList] = useState<GroceryList | undefined>(
+		undefined
 	)
-}
 
-const ListScreen = ({listId}: StackScreenProps<'List'>) => {
-	const groceries: GroceryList = [
-		{name: 'Butter'},
-		{name: 'Cheese'},
-		{name: 'Eggs'}
-	]
+	const {getItem} = useAsyncStorage(route.params.listUuid)
+
+	const _listItem = ({item}: ListItemProps) => {
+		return (
+			<View>
+				<Text>{item}</Text>
+			</View>
+		)
+	}
+
+	useEffect(() => {
+		const getGroceryList = async () => {
+			const groceryListFromStorage = await getItem()
+
+			setGroceryList(JSON.parse(groceryListFromStorage!))
+		}
+
+		getGroceryList()
+	}, [])
 
 	return (
 		<SafeAreaContainer>
-			<FlatList data={groceries} renderItem={_listItem} />
+			<Text>{groceryList?.name}</Text>
+			<FlatList data={groceryList?.items} renderItem={_listItem} />
 		</SafeAreaContainer>
 	)
 }

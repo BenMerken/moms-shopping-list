@@ -1,7 +1,8 @@
 const text = {
 	screenTitle: {
 		fontFamily: 'Arial',
-		fontSize: 24
+		fontSize: 24,
+		marginBottom: 16
 	},
 	subtitle: {
 		marginBottom: 8,
