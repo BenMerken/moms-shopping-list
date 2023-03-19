@@ -74,11 +74,12 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		...theme.dropShadow
 	},
-	listItemCloseIcon:{
+	listItemCloseIcon: {
 		position: 'absolute',
 		top: 16,
-		right: 16,
-	}
+		right: 16
+	},
+	groceryListName: {fontWeight: '700'}
 })
 
 const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
@@ -112,10 +113,13 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 					})
 				}}
 			>
-				<TouchableOpacity style={styles.listItemCloseIcon} onPress={() => removeListItem(item.uuid)}>
+				<TouchableOpacity
+					style={styles.listItemCloseIcon}
+					onPress={() => removeListItem(item.uuid)}
+				>
 					<FontAwesome name='close' color='#000' size={16} />
 				</TouchableOpacity>
-				<Text>{item.name},</Text>
+				<Text style={styles.groceryListName}>{item.name},</Text>
 				<Text>
 					aangemaakt op{' '}
 					{`${createdAt.toLocaleDateString(
