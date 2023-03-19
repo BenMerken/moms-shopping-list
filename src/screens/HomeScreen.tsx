@@ -28,9 +28,9 @@ const styles = StyleSheet.create({
 		alignSelf: 'center'
 	},
 	addButton: {
-		position: 'absolute',
 		bottom: 16,
 		right: 16,
+		alignSelf: 'flex-end',
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
