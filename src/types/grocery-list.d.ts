@@ -4,4 +4,5 @@ declare type GroceryList = {
 	uuid: string
 	name: string
 	items?: GroceryListItem[]
+	createdAt: number
 }

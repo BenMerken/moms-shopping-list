@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		height: 64,
 		width: 64,
-		backgroundColor: theme.light.buttonPrimary,
+		backgroundColor: theme.light.primary,
 		borderRadius: 50,
 		...theme.dropShadow
 	},
@@ -65,9 +65,12 @@ const styles = StyleSheet.create({
 		gap: 8
 	},
 	groceryListItem: {
-		backgroundColor: 'white',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		gap: 4,
 		padding: 16,
 		width: Dimensions.get('screen').width * 0.8,
+		backgroundColor: 'white',
 		...theme.dropShadow
 	}
 })
@@ -81,6 +84,8 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 	const [openNewListModal, setOpenListModal] = useState(false)
 
 	const _groceryListItem = ({item}: GroceryListItemProps) => {
+		const createdAt = new Date(item.createdAt || 0)
+
 		return (
 			<TouchableOpacity
 				style={styles.groceryListItem}
@@ -91,7 +96,13 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 					})
 				}
 			>
-				<Text>{item.name}</Text>
+				<Text>{item.name},</Text>
+				<Text>
+					aangemaakt op{' '}
+					{`${createdAt.toLocaleDateString(
+						'nl-BE'
+					)}, om ${createdAt.toLocaleTimeString('nl-BE')}`}
+				</Text>
 			</TouchableOpacity>
 		)
 	}
@@ -107,10 +118,13 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 			const newList: GroceryList = {
 				uuid: newListUuid,
 				name: newListName,
-				items: []
+				items: [],
+				createdAt: Date.now()
 			}
 
 			await AsyncStorage.setItem(newListUuid, JSON.stringify(newList))
+			setGroceryLists([newList, ...groceryLists])
+			onCloseModal()
 			navigation.navigate('List', {
 				listUuid: newListUuid,
 				listName: newListName
@@ -129,7 +143,11 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 				storage.map((d) => d[1] && JSON.parse(d[1]))
 			)) as GroceryList[]
 
-			setGroceryLists(groceryListsFromStorage)
+			setGroceryLists(
+				groceryListsFromStorage.sort((a, b) =>
+					a.createdAt > b.createdAt ? -1 : 0
+				)
+			)
 		}
 
 		getGroceryListsFromStorage()
@@ -198,7 +216,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 						<Button
 							title='Lijstje aanmaken'
 							disabled={!newListName}
-							color={theme.light.buttonPrimary}
+							color={theme.light.primary}
 							onPress={createNewShoppingList}
 						/>
 					</View>

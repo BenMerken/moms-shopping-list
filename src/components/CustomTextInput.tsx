@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		borderRadius: 8
 	},
 	label: {
-		color: theme.dark.buttonPrimary,
+		color: theme.dark.primary,
 		textTransform: 'uppercase'
 	},
 	input: {

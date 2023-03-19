@@ -7,6 +7,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {ColorSchemeName} from 'react-native'
 
 import {HomeScreen, ListScreen} from '@screens/index'
+import theme from '@utils/theme'
 
 const Stack = createNativeStackNavigator<StackParamList>()
 
@@ -16,12 +17,26 @@ const StackNavigator = () => {
 			<Stack.Screen
 				name='Home'
 				component={HomeScreen}
-				options={{title: 'Mijn Boodschappenlijstjes'}}
+				options={{
+					title: 'Mijn Boodschappenlijstjes',
+					navigationBarColor: theme.light.primary,
+					statusBarColor: theme.light.primary,
+					headerTintColor: theme.light.background,
+					headerStyle: {backgroundColor: theme.light.primary},
+					orientation: 'all'
+				}}
 			/>
 			<Stack.Screen
 				name='List'
 				component={ListScreen}
-				options={({route}) => ({title: route.params.listName})}
+				options={({route}) => ({
+					title: route.params.listName,
+					statusBarColor: theme.light.primary,
+					navigationBarColor: theme.light.primary,
+					headerTintColor: theme.light.background,
+					headerStyle: {backgroundColor: theme.light.primary},
+					orientation: 'all'
+				})}
 			/>
 		</Stack.Navigator>
 	)
