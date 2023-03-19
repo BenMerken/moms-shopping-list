@@ -139,7 +139,7 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 			)}
 			<KeyboardAvoidingView
 				style={styles.newItemForm}
-				keyboardVerticalOffset={headerHeight}
+				keyboardVerticalOffset={headerHeight + 32}
 				behavior='padding'
 			>
 				<Text style={{...text.subtitle}}>Nieuw Artikel</Text>
