@@ -89,7 +89,11 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 	}
 
 	const addItem = async () => {
-		if (groceryList!.items!.includes(newItemName)) {
+		if (
+			groceryList!
+				.items!.map((item) => item.toLowerCase())
+				.includes(newItemName.toLowerCase())
+		) {
 			Alert.alert(
 				`Er bestaat al een artikel met naam "${newItemName}" in dit lijstje`
 			)
