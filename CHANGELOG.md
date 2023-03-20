@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 -   First release; features:
     -   Maintain a list of shopping lists on `HomeScreen.tsx`;
-    -   Add new shopping lists by entering a name for the list;
+    -   Add new shopping lists by entering a name for the list, and tapping the `"+ LIJSTJE AANMAKEN"`;
     -	Remove an existing shopping list, by tapping on the close icon on its list item card;
     -   Maintain a list of shopping items for an individual shopping on `ListScreen.tsx`;
 	-	Add new shopping list items by entering a name for the item, and tapping the `"+ ARTIKEL TOEVOEGEN"` button;
