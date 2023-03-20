@@ -1,5 +1,4 @@
 import {
-	Dimensions,
 	StyleSheet,
 	Text,
 	TextInput,
@@ -8,6 +7,7 @@ import {
 	ViewStyle
 } from 'react-native'
 
+import layout from '@utils/layout'
 import theme from '@utils/theme'
 
 type CustomTextInputProps = TextInputProps & {
@@ -18,7 +18,7 @@ type CustomTextInputProps = TextInputProps & {
 const styles = StyleSheet.create({
 	inputGroup: {
 		padding: 8,
-		width: Dimensions.get('screen').width * 0.8,
+		width: layout.window.widthWithMargin,
 		borderWidth: 1,
 		borderColor: '#ccc',
 		borderRadius: 8

@@ -4,7 +4,6 @@ import {useEffect, useState} from 'react'
 import {
 	Alert,
 	Button,
-	Dimensions,
 	FlatList,
 	Modal,
 	StyleSheet,
@@ -15,6 +14,7 @@ import {
 import uuid from 'react-native-uuid'
 
 import {CustomTextInput, SafeAreaContainer} from '@components/index'
+import layout from '@utils/layout'
 import text from '@utils/text'
 import theme from '@utils/theme'
 
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 		gap: 32
 	},
 	placeholderText: {
-		width: Dimensions.get('screen').width * 0.8,
+		width: layout.window.widthWithMargin,
 		textAlign: 'center'
 	},
 	modalBackground: {
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
 		gap: 4,
 		paddingTop: 40,
 		padding: 16,
-		width: Dimensions.get('screen').width * 0.8,
+		width: layout.window.widthWithMargin,
 		backgroundColor: 'white',
 		...theme.dropShadow
 	},

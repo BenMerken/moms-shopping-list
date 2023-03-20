@@ -1,14 +1,14 @@
 import {Dimensions} from 'react-native'
 
-const width = Dimensions.get('window').width
-const height = Dimensions.get('window').height
+const fullWidth = Dimensions.get('window').width
+const fullHeight = Dimensions.get('window').height
 
-const layout =  {
+const layout = {
 	window: {
-		width,
-		height
-	},
-	isSmallDevice: width < 375
+		fullWidth,
+		fullHeight,
+		widthWithMargin: fullWidth * 0.8
+	}
 }
 
 export default layout
