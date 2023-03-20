@@ -243,7 +243,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 							onChangeText={(newName) => setNewListName(newName)}
 						/>
 						<Button
-							title='Lijstje aanmaken'
+							title='+ Lijstje aanmaken'
 							disabled={!newListName}
 							color={theme.light.primary}
 							onPress={createNewShoppingList}
