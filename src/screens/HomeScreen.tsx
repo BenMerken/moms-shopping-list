@@ -127,7 +127,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 					style={styles.listItemCloseIcon}
 					onPress={() => removeListItem(item.uuid)}
 				>
-					<FontAwesome name='close' color='#000' size={16} />
+					<FontAwesome name='close' color='#000' size={24} />
 				</TouchableOpacity>
 				<Text style={styles.shoppingListName}>{item.name},</Text>
 				<Text>
