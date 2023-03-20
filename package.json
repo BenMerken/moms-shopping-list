@@ -2,6 +2,10 @@
   "name": "moms-shopping-list",
   "version": "1.0.0",
   "private": true,
+  "author": {
+	"name": "Ben Merken",
+	"email": "ben.merken@gmail.com"
+  },
   "main": "src/App.tsx",
   "scripts": {
     "start": "expo start",

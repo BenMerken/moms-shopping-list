@@ -1,7 +1,9 @@
 {
   "expo": {
-    "name": "moms-shopping-list",
+    "name": "Mijn boodschappen",
     "slug": "moms-shopping-list",
+	"description": "A simple shopping list app for my mother",
+	"owner": "benmerken",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
