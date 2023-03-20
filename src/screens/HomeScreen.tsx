@@ -18,8 +18,8 @@ import {CustomTextInput, SafeAreaContainer} from '@components/index'
 import text from '@utils/text'
 import theme from '@utils/theme'
 
-type GroceryListItemProps = {
-	item: GroceryList
+type ShoppingListItemProps = {
+	item: ShoppingList
 }
 
 const styles = StyleSheet.create({
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		...theme.dropShadow
 	},
-	noGroceryListsPlaceholder: {
+	noShoppingListsPlaceholder: {
 		flexGrow: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
 	input: {
 		marginBottom: 16
 	},
-	groceryLists: {
+	shoppingLists: {
 		flexGrow: 1,
 		alignItems: 'center',
 		gap: 8
 	},
-	groceryListItem: {
+	shoppingListItem: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		gap: 4,
@@ -89,12 +89,12 @@ const styles = StyleSheet.create({
 		top: 16,
 		right: 16
 	},
-	groceryListName: {fontWeight: '700'}
+	shoppingListName: {fontWeight: '700'}
 })
 
 const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
-	const [groceryLists, setGroceryLists] = useState<GroceryList[]>([])
-	const [loadingGroceryLists, setLoadingGroceryLists] = useState(true)
+	const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([])
+	const [loadingShoppingLists, setLoadingShoppingLists] = useState(true)
 
 	const [newListName, setNewListName] = useState('')
 
@@ -102,18 +102,18 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 
 	const removeListItem = async (uuid: string) => {
 		await AsyncStorage.removeItem(uuid, () => {
-			setGroceryLists([
-				...groceryLists.filter((list) => list.uuid !== uuid)
+			setShoppingLists([
+				...shoppingLists.filter((list) => list.uuid !== uuid)
 			])
 		})
 	}
 
-	const _groceryListItem = ({item}: GroceryListItemProps) => {
+	const _shoppingListItem = ({item}: ShoppingListItemProps) => {
 		const createdAt = new Date(item.createdAt || 0)
 
 		return (
 			<TouchableOpacity
-				style={styles.groceryListItem}
+				style={styles.shoppingListItem}
 				onPress={(e) => {
 					e.preventDefault()
 					e.stopPropagation()
@@ -129,7 +129,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 				>
 					<FontAwesome name='close' color='#000' size={16} />
 				</TouchableOpacity>
-				<Text style={styles.groceryListName}>{item.name},</Text>
+				<Text style={styles.shoppingListName}>{item.name},</Text>
 				<Text>
 					aangemaakt op{' '}
 					{`${createdAt.toLocaleDateString(
@@ -148,7 +148,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 	const createNewShoppingList = async () => {
 		try {
 			const newListUuid = uuid.v4() as string
-			const newList: GroceryList = {
+			const newList: ShoppingList = {
 				uuid: newListUuid,
 				name: newListName,
 				items: [],
@@ -156,7 +156,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 			}
 
 			await AsyncStorage.setItem(newListUuid, JSON.stringify(newList))
-			setGroceryLists([newList, ...groceryLists])
+			setShoppingLists([newList, ...shoppingLists])
 			onCloseModal()
 			navigation.navigate('List', {
 				listUuid: newListUuid,
@@ -168,37 +168,37 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 	}
 
 	useEffect(() => {
-		const getGroceryListsFromStorage = async () => {
-			const groceryListsKeys = await AsyncStorage.getAllKeys()
-			const groceryListsFromStorage = (await AsyncStorage.multiGet(
-				groceryListsKeys
+		const getShoppingListsFromStorage = async () => {
+			const shoppingListsKeys = await AsyncStorage.getAllKeys()
+			const shoppingListsFromStorage = (await AsyncStorage.multiGet(
+				shoppingListsKeys
 			).then((storage) =>
 				storage.map((d) => d[1] && JSON.parse(d[1]))
-			)) as GroceryList[]
+			)) as ShoppingList[]
 
-			setGroceryLists(
-				groceryListsFromStorage.sort((a, b) =>
+			setShoppingLists(
+				shoppingListsFromStorage.sort((a, b) =>
 					a.createdAt > b.createdAt ? -1 : 0
 				)
 			)
 		}
 
-		getGroceryListsFromStorage()
-		setLoadingGroceryLists(false)
+		getShoppingListsFromStorage()
+		setLoadingShoppingLists(false)
 	}, [])
 
 	return (
 		<SafeAreaContainer>
-			{loadingGroceryLists ? (
+			{loadingShoppingLists ? (
 				<Text>Laden...</Text>
-			) : groceryLists.length ? (
+			) : shoppingLists.length ? (
 				<FlatList
-					contentContainerStyle={styles.groceryLists}
-					data={groceryLists}
-					renderItem={_groceryListItem}
+					contentContainerStyle={styles.shoppingLists}
+					data={shoppingLists}
+					renderItem={_shoppingListItem}
 				/>
 			) : (
-				<View style={styles.noGroceryListsPlaceholder}>
+				<View style={styles.noShoppingListsPlaceholder}>
 					<Text style={styles.placeholderText}>
 						Er zijn geen boodschappenlijstjes opgeslagen.
 					</Text>

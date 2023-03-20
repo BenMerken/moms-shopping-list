@@ -1,8 +1,8 @@
-declare type GroceryListItem = string
+declare type ShoppingListItem = string
 
-declare type GroceryList = {
+declare type ShoppingList = {
 	uuid: string
 	name: string
-	items?: GroceryListItem[]
+	items?: ShoppingListItem[]
 	createdAt: number
 }

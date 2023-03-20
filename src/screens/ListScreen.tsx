@@ -21,11 +21,11 @@ import text from '@utils/text'
 import theme from '@utils/theme'
 
 type ListItemProps = {
-	item: GroceryListItem
+	item: ShoppingListItem
 }
 
 const styles = StyleSheet.create({
-	groceryListItems: {
+	shoppingListItems: {
 		alignItems: 'center'
 	},
 	noItemsPlaceholder: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	groceryListItem: {
+	shoppingListItem: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		alignItems: 'center',
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 })
 
 const ListScreen = ({route}: StackScreenProps<'List'>) => {
-	const [groceryList, setGroceryList] = useState<GroceryList>()
+	const [shoppingList, setShoppingList] = useState<ShoppingList>()
 	const [newItemName, setNewItemName] = useState('')
 
 	const headerHeight = useHeaderHeight()
@@ -64,22 +64,22 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 
 	const _listItem = ({item}: ListItemProps) => {
 		const removeItem = async () => {
-			const newGroceryList = {
-				...groceryList!,
-				items: groceryList!.items!.filter(
+			const newShoppingList = {
+				...shoppingList!,
+				items: shoppingList!.items!.filter(
 					(itemOnList) => itemOnList !== item
 				)
 			}
 
 			await AsyncStorage.mergeItem(
-				groceryList!.uuid,
-				JSON.stringify(newGroceryList)
+				shoppingList!.uuid,
+				JSON.stringify(newShoppingList)
 			)
-			setGroceryList(newGroceryList)
+			setShoppingList(newShoppingList)
 		}
 
 		return (
-			<View key={item} style={styles.groceryListItem}>
+			<View key={item} style={styles.shoppingListItem}>
 				<TouchableOpacity onPress={removeItem}>
 					<FontAwesome name='close' size={24} />
 				</TouchableOpacity>
@@ -90,7 +90,7 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 
 	const addItem = async () => {
 		if (
-			groceryList!
+			shoppingList!
 				.items!.map((item) => item.toLowerCase())
 				.includes(newItemName.toLowerCase())
 		) {
@@ -101,39 +101,39 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 			return
 		}
 
-		const newGroceryList = {
-			...groceryList!,
-			items: [...groceryList!.items!, newItemName]
+		const newShoppingList = {
+			...shoppingList!,
+			items: [...shoppingList!.items!, newItemName]
 		}
 
 		await AsyncStorage.mergeItem(
-			groceryList!.uuid,
-			JSON.stringify(newGroceryList)
+			shoppingList!.uuid,
+			JSON.stringify(newShoppingList)
 		)
-		setGroceryList(newGroceryList)
+		setShoppingList(newShoppingList)
 		setNewItemName('')
 	}
 
 	useEffect(() => {
-		const getGroceryList = async () => {
-			const groceryListFromStorage = await getItem()
+		const getShoppingList = async () => {
+			const shoppingListFromStorage = await getItem()
 
-			setGroceryList(JSON.parse(groceryListFromStorage!))
+			setShoppingList(JSON.parse(shoppingListFromStorage!))
 		}
 
-		getGroceryList()
+		getShoppingList()
 	}, [])
 
 	return (
 		<SafeAreaContainer>
-			{!groceryList?.items?.length ? (
+			{!shoppingList?.items?.length ? (
 				<View style={styles.noItemsPlaceholder}>
 					<Text>Dit lijstje is (nog) leeg...</Text>
 				</View>
 			) : (
 				<FlatList
-					contentContainerStyle={styles.groceryListItems}
-					data={groceryList?.items}
+					contentContainerStyle={styles.shoppingListItems}
+					data={shoppingList?.items}
 					renderItem={_listItem}
 				/>
 			)}
