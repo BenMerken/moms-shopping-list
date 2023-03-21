@@ -1,3 +1,11 @@
+import {TextStyle} from 'react-native/types'
+
+const label: TextStyle = {
+	fontSize: 8,
+	marginBottom: 4,
+	textTransform: 'uppercase'
+}
+
 const text = {
 	screenTitle: {
 		fontFamily: 'Arial',
@@ -12,11 +20,7 @@ const text = {
 	text: {
 		fontSize: 12
 	},
-	label: {
-		fontsize: 8,
-		marginBottom: 4,
-		textTransform: 'uppercase'
-	}
+	label
 }
 
 export default text

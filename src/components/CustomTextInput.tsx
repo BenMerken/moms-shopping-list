@@ -1,3 +1,5 @@
+import {useTheme} from '@react-navigation/native'
+import {useMemo} from 'react'
 import {
 	StyleSheet,
 	Text,
@@ -8,39 +10,47 @@ import {
 } from 'react-native'
 
 import layout from '@utils/layout'
-import theme from '@utils/theme'
+import text from '@utils/text'
 
 type CustomTextInputProps = TextInputProps & {
 	label: string
 	inputGroupStyle?: ViewStyle
 }
 
-const styles = StyleSheet.create({
-	inputGroup: {
-		padding: 8,
-		width: layout.window.widthWithMargin,
-		borderWidth: 1,
-		borderColor: '#ccc',
-		borderRadius: 8
-	},
-	label: {
-		color: theme.dark.primary,
-		textTransform: 'uppercase'
-	},
-	input: {
-		padding: 8
-	}
-})
-
 const CustomTextInput = ({
 	label,
 	inputGroupStyle,
 	...textInputProps
 }: CustomTextInputProps) => {
+	const {colors} = useTheme()
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				inputGroup: {
+					padding: 8,
+					width: layout.window.widthWithMargin,
+					borderWidth: 1,
+					borderColor: colors.border,
+					borderRadius: 8
+				},
+				input: {
+					...text.text,
+					padding: 8,
+					color: colors.text
+				}
+			}),
+		[colors, text, layout]
+	)
+
 	return (
 		<View style={{...styles.inputGroup, ...inputGroupStyle}}>
-			<Text style={styles.label}>{label}</Text>
-			<TextInput style={styles.input} {...textInputProps} />
+			<Text style={{...text.label, color: colors.label}}>{label}</Text>
+			<TextInput
+				placeholderTextColor={colors.placeholder}
+				style={styles.input}
+				{...textInputProps}
+			/>
 		</View>
 	)
 }

@@ -1,6 +1,7 @@
 import {FontAwesome} from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {useEffect, useState} from 'react'
+import {useTheme} from '@react-navigation/native'
+import {useEffect, useMemo, useState} from 'react'
 import {
 	Alert,
 	Button,
@@ -22,83 +23,89 @@ type ShoppingListItemProps = {
 	item: ShoppingList
 }
 
-const styles = StyleSheet.create({
-	screenTitle: {
-		...text.screenTitle,
-		alignSelf: 'center'
-	},
-	addButton: {
-		bottom: 16,
-		right: 16,
-		alignSelf: 'flex-end',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		height: 64,
-		width: 64,
-		backgroundColor: theme.light.primary,
-		borderRadius: 50,
-		...theme.dropShadow
-	},
-	noShoppingListsPlaceholder: {
-		flexGrow: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		gap: 32
-	},
-	placeholderText: {
-		width: layout.window.widthWithMargin,
-		textAlign: 'center'
-	},
-	modalBackground: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	modalTopRow: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignContent: 'center'
-	},
-	modalContent: {
-		padding: 16,
-		backgroundColor: '#fff',
-		borderRadius: 8,
-		...theme.dropShadow
-	},
-	input: {
-		marginBottom: 16
-	},
-	shoppingLists: {
-		flexGrow: 1,
-		alignItems: 'center',
-		gap: 8
-	},
-	shoppingListItem: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		gap: 4,
-		paddingTop: 40,
-		padding: 16,
-		width: layout.window.widthWithMargin,
-		backgroundColor: 'white',
-		...theme.dropShadow
-	},
-	listItemCloseIcon: {
-		position: 'absolute',
-		top: 16,
-		right: 16
-	},
-	shoppingListName: {fontWeight: '700'}
-})
-
 const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 	const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([])
 	const [loadingShoppingLists, setLoadingShoppingLists] = useState(true)
-
 	const [newListName, setNewListName] = useState('')
-
 	const [openNewListModal, setOpenListModal] = useState(false)
+
+	const {colors} = useTheme()
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				addButton: {
+					...theme.dropShadow,
+					bottom: 16,
+					right: 16,
+					alignSelf: 'flex-end',
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					height: 64,
+					width: 64,
+					backgroundColor: colors.primary,
+					borderRadius: 50
+				},
+				noShoppingListsPlaceholder: {
+					flexGrow: 1,
+					justifyContent: 'center',
+					alignItems: 'center',
+					gap: 32
+				},
+				placeholderText: {
+					...text.text,
+					width: layout.window.widthWithMargin,
+					textAlign: 'center',
+					color: colors.text
+				},
+				modalBackground: {
+					flex: 1,
+					justifyContent: 'center',
+					alignItems: 'center'
+				},
+				modalTopRow: {
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignContent: 'center'
+				},
+				modalContent: {
+					...theme.dropShadow,
+					padding: 16,
+					backgroundColor: colors.card,
+					borderRadius: 8
+				},
+				input: {
+					marginBottom: 16
+				},
+				shoppingLists: {
+					flexGrow: 1,
+					alignItems: 'center',
+					gap: 8
+				},
+				shoppingListItem: {
+					...theme.dropShadow,
+					flexDirection: 'row',
+					flexWrap: 'wrap',
+					gap: 4,
+					paddingTop: 40,
+					padding: 16,
+					width: layout.window.widthWithMargin,
+					backgroundColor: colors.card
+				},
+				listItemCloseIcon: {
+					position: 'absolute',
+					top: 16,
+					right: 16
+				},
+				shoppingListName: {
+					...text.text,
+					fontWeight: '700',
+					color: colors.text
+				}
+			}),
+		[colors, theme.dropShadow, layout.window.widthWithMargin, text]
+	)
 
 	const removeListItem = async (uuid: string) => {
 		await AsyncStorage.removeItem(uuid, () => {
@@ -127,10 +134,10 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 					style={styles.listItemCloseIcon}
 					onPress={() => removeListItem(item.uuid)}
 				>
-					<FontAwesome name='close' color='#000' size={24} />
+					<FontAwesome name='close' color={colors.text} size={24} />
 				</TouchableOpacity>
 				<Text style={styles.shoppingListName}>{item.name},</Text>
-				<Text>
+				<Text style={{...text.text, color: colors.text}}>
 					aangemaakt op{' '}
 					{`${createdAt.toLocaleDateString(
 						'nl-BE'
@@ -167,6 +174,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 		}
 	}
 
+	// Get the shopping lists in app storage, and add them to the component's state.
 	useEffect(() => {
 		const getShoppingListsFromStorage = async () => {
 			const shoppingListsKeys = await AsyncStorage.getAllKeys()
@@ -214,23 +222,21 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 					setOpenListModal(true)
 				}}
 			>
-				<FontAwesome
-					name='plus'
-					size={24}
-					color={theme.light.background}
-				/>
+				<FontAwesome name='plus' size={24} color={colors.background} />
 			</TouchableOpacity>
 			<Modal animationType='slide' transparent visible={openNewListModal}>
 				<View style={styles.modalBackground}>
 					<View style={styles.modalContent}>
 						<View style={styles.modalTopRow}>
-							<Text style={{...text.subtitle}}>
+							<Text
+								style={{...text.subtitle, color: colors.text}}
+							>
 								Nieuw Lijstje
 							</Text>
 							<TouchableOpacity onPress={onCloseModal}>
 								<FontAwesome
 									name='close'
-									color='#000'
+									color={colors.text}
 									size={24}
 								/>
 							</TouchableOpacity>
@@ -245,7 +251,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 						<Button
 							title='+ Lijstje aanmaken'
 							disabled={!newListName}
-							color={theme.light.primary}
+							color={colors.primary}
 							onPress={createNewShoppingList}
 						/>
 					</View>

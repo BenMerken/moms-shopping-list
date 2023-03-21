@@ -3,7 +3,8 @@ import AsyncStorage, {
 	useAsyncStorage
 } from '@react-native-async-storage/async-storage'
 import {useHeaderHeight} from '@react-navigation/elements'
-import {useEffect, useState} from 'react'
+import {useTheme} from '@react-navigation/native'
+import {useEffect, useMemo, useState} from 'react'
 import {
 	Alert,
 	Button,
@@ -24,45 +25,52 @@ type ListItemProps = {
 	item: ShoppingListItem
 }
 
-const styles = StyleSheet.create({
-	shoppingListItems: {
-		alignItems: 'center'
-	},
-	noItemsPlaceholder: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	shoppingListItem: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		alignItems: 'center',
-		gap: 32,
-		marginBottom: 8,
-		padding: 16,
-		width: layout.window.widthWithMargin,
-		backgroundColor: 'white',
-		...theme.dropShadow
-	},
-	newItemForm: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginBottom: 32
-	},
-	newItemFormTitle: {
-		width: layout.window.widthWithMargin,
-		...text.subtitle
-	},
-	input: {
-		marginBottom: 16
-	}
-})
-
 const ListScreen = ({route}: StackScreenProps<'List'>) => {
 	const [shoppingList, setShoppingList] = useState<ShoppingList>()
 	const [newItemName, setNewItemName] = useState('')
 
 	const headerHeight = useHeaderHeight()
+
+	const {colors} = useTheme()
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				shoppingListItems: {
+					alignItems: 'center'
+				},
+				noItemsPlaceholder: {
+					flex: 1,
+					justifyContent: 'center',
+					alignItems: 'center'
+				},
+				shoppingListItem: {
+					...theme.dropShadow,
+					flexDirection: 'row',
+					flexWrap: 'wrap',
+					alignItems: 'center',
+					gap: 32,
+					marginBottom: 8,
+					padding: 16,
+					width: layout.window.widthWithMargin,
+					backgroundColor: colors.card
+				},
+				newItemForm: {
+					justifyContent: 'center',
+					alignItems: 'center',
+					marginBottom: 32
+				},
+				newItemFormTitle: {
+					...text.subtitle,
+					width: layout.window.widthWithMargin,
+					color: colors.text
+				},
+				input: {
+					marginBottom: 16
+				}
+			}),
+		[colors, text, theme, layout]
+	)
 
 	const {getItem} = useAsyncStorage(route.params.listUuid)
 
@@ -85,9 +93,9 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 		return (
 			<View key={item} style={styles.shoppingListItem}>
 				<TouchableOpacity onPress={removeItem}>
-					<FontAwesome name='close' size={24} />
+					<FontAwesome name='close' size={24} color={colors.text} />
 				</TouchableOpacity>
-				<Text>{item}</Text>
+				<Text style={{...text.text, color: colors.text}}>{item}</Text>
 			</View>
 		)
 	}
@@ -132,7 +140,9 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 		<SafeAreaContainer>
 			{!shoppingList?.items?.length ? (
 				<View style={styles.noItemsPlaceholder}>
-					<Text>Dit lijstje is (nog) leeg...</Text>
+					<Text style={{...text.text, color: colors.text}}>
+						Dit lijstje is (nog) leeg...
+					</Text>
 				</View>
 			) : (
 				<FlatList
@@ -157,7 +167,7 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 				<Button
 					title='+ Artikel toevoegen'
 					disabled={!newItemName}
-					color={theme.light.primary}
+					color={colors.primary}
 					onPress={addItem}
 				/>
 			</KeyboardAvoidingView>

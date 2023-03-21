@@ -1,17 +1,17 @@
-import {
-	NavigationContainer,
-	DefaultTheme,
-	DarkTheme
-} from '@react-navigation/native'
+import {NavigationContainer, Theme} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
-import {ColorSchemeName} from 'react-native'
 
+import useColorScheme from '@hooks/useColorScheme'
 import {HomeScreen, ListScreen} from '@screens/index'
 import theme from '@utils/theme'
 
+type StackNavigatorProps = {
+	theme: Theme
+}
+
 const Stack = createNativeStackNavigator<StackParamList>()
 
-const StackNavigator = () => {
+const StackNavigator = ({theme}: StackNavigatorProps) => {
 	return (
 		<Stack.Navigator>
 			<Stack.Screen
@@ -19,10 +19,12 @@ const StackNavigator = () => {
 				component={HomeScreen}
 				options={{
 					title: 'Mijn Boodschappenlijstjes',
-					navigationBarColor: theme.light.primary,
-					statusBarColor: theme.light.primary,
-					headerTintColor: theme.light.background,
-					headerStyle: {backgroundColor: theme.light.primary},
+					navigationBarColor: theme.colors.primary,
+					statusBarColor: theme.colors.primary,
+					headerTintColor: theme.colors.background,
+					headerStyle: {
+						backgroundColor: theme.colors.primary
+					},
 					orientation: 'all'
 				}}
 			/>
@@ -31,10 +33,12 @@ const StackNavigator = () => {
 				component={ListScreen}
 				options={({route}) => ({
 					title: route.params.listName,
-					statusBarColor: theme.light.primary,
-					navigationBarColor: theme.light.primary,
-					headerTintColor: theme.light.background,
-					headerStyle: {backgroundColor: theme.light.primary},
+					statusBarColor: theme.colors.primary,
+					navigationBarColor: theme.colors.primary,
+					headerTintColor: theme.colors.background,
+					headerStyle: {
+						backgroundColor: theme.colors.primary
+					},
 					orientation: 'all'
 				})}
 			/>
@@ -42,12 +46,14 @@ const StackNavigator = () => {
 	)
 }
 
-const Navigation = ({colorScheme}: {colorScheme: ColorSchemeName}) => {
+const Navigation = () => {
+	const colorScheme = useColorScheme()
+
+	const appTheme = colorScheme === 'dark' ? theme.dark : theme.light
+
 	return (
-		<NavigationContainer
-			theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-		>
-			<StackNavigator />
+		<NavigationContainer theme={appTheme}>
+			<StackNavigator theme={appTheme} />
 		</NavigationContainer>
 	)
 }
