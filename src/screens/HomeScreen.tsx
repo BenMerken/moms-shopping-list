@@ -23,10 +23,106 @@ type ShoppingListItemProps = {
 	item: ShoppingList
 }
 
+type NewListModalContentProps = {
+	addNewShoppingList: (newList: ShoppingList) => void
+	closeModal: () => void
+	navigateToNewShoppingListScreen: (newListUuid: string, newListName: string) => void
+}
+
+const NewListModalContent = ({
+	addNewShoppingList,
+	closeModal,
+	navigateToNewShoppingListScreen
+}: NewListModalContentProps) => {
+	const {colors} = useTheme()
+
+	const [newListName, setNewListName] = useState('')
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				modalBackground: {
+					flex: 1,
+					justifyContent: 'center',
+					alignItems: 'center'
+				},
+				modalContent: {
+					...theme.dropShadow,
+					padding: 16,
+					backgroundColor: colors.card,
+					borderRadius: 8
+				},
+				modalTopRow: {
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignContent: 'center'
+				},
+				input: {
+					marginBottom: 16
+				}
+			}),
+		[colors.card]
+	)
+
+	const createNewShoppingList = async () => {
+		try {
+			const newListUuid = uuid.v4() as string
+			const newList: ShoppingList = {
+				uuid: newListUuid,
+				name: newListName,
+				items: [],
+				createdAt: Date.now()
+			}
+
+			await AsyncStorage.setItem(newListUuid, JSON.stringify(newList))
+			addNewShoppingList(newList)
+			onCloseModal()
+			navigateToNewShoppingListScreen(newListUuid, newListName)
+		} catch (error) {
+			Alert.alert('Het lijstje kon niet worden opgeslagen.')
+		}
+	}
+
+	const onCloseModal = () => {
+		closeModal()
+	}
+
+	return (
+		<View style={styles.modalBackground}>
+			<View style={styles.modalContent}>
+				<View style={styles.modalTopRow}>
+					<Text style={{...text.subtitle, color: colors.text}}>
+						Nieuw Lijstje
+					</Text>
+					<TouchableOpacity onPress={onCloseModal}>
+						<FontAwesome
+							name='close'
+							color={colors.text}
+							size={24}
+						/>
+					</TouchableOpacity>
+				</View>
+				<CustomTextInput
+					inputGroupStyle={styles.input}
+					label='Naam lijstje'
+					value={newListName}
+					placeholder='bijv. "Aldi/Lidl/AH..."'
+					onChangeText={(newName) => setNewListName(newName)}
+				/>
+				<Button
+					title='+ Lijstje aanmaken'
+					disabled={!newListName}
+					color={colors.primary}
+					onPress={createNewShoppingList}
+				/>
+			</View>
+		</View>
+	)
+}
+
 const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 	const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([])
 	const [loadingShoppingLists, setLoadingShoppingLists] = useState(true)
-	const [newListName, setNewListName] = useState('')
 	const [openNewListModal, setOpenListModal] = useState(false)
 
 	const {colors} = useTheme()
@@ -58,25 +154,6 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 					width: layout.window.widthWithMargin,
 					textAlign: 'center',
 					color: colors.text
-				},
-				modalBackground: {
-					flex: 1,
-					justifyContent: 'center',
-					alignItems: 'center'
-				},
-				modalTopRow: {
-					flexDirection: 'row',
-					justifyContent: 'space-between',
-					alignContent: 'center'
-				},
-				modalContent: {
-					...theme.dropShadow,
-					padding: 16,
-					backgroundColor: colors.card,
-					borderRadius: 8
-				},
-				input: {
-					marginBottom: 16
 				},
 				shoppingLists: {
 					flexGrow: 1,
@@ -147,33 +224,6 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 		)
 	}
 
-	const onCloseModal = () => {
-		setOpenListModal(false)
-		setNewListName('')
-	}
-
-	const createNewShoppingList = async () => {
-		try {
-			const newListUuid = uuid.v4() as string
-			const newList: ShoppingList = {
-				uuid: newListUuid,
-				name: newListName,
-				items: [],
-				createdAt: Date.now()
-			}
-
-			await AsyncStorage.setItem(newListUuid, JSON.stringify(newList))
-			setShoppingLists([newList, ...shoppingLists])
-			onCloseModal()
-			navigation.navigate('List', {
-				listUuid: newListUuid,
-				listName: newListName
-			})
-		} catch (error) {
-			Alert.alert('Het lijstje kon niet worden opgeslagen.')
-		}
-	}
-
 	// Get the shopping lists in app storage, and add them to the component's state.
 	useEffect(() => {
 		const getShoppingListsFromStorage = async () => {
@@ -225,37 +275,21 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 				<FontAwesome name='plus' size={24} color={colors.background} />
 			</TouchableOpacity>
 			<Modal animationType='slide' transparent visible={openNewListModal}>
-				<View style={styles.modalBackground}>
-					<View style={styles.modalContent}>
-						<View style={styles.modalTopRow}>
-							<Text
-								style={{...text.subtitle, color: colors.text}}
-							>
-								Nieuw Lijstje
-							</Text>
-							<TouchableOpacity onPress={onCloseModal}>
-								<FontAwesome
-									name='close'
-									color={colors.text}
-									size={24}
-								/>
-							</TouchableOpacity>
-						</View>
-						<CustomTextInput
-							inputGroupStyle={styles.input}
-							label='Naam lijstje'
-							value={newListName}
-							placeholder='bijv. "Aldi/Lidl/AH..."'
-							onChangeText={(newName) => setNewListName(newName)}
-						/>
-						<Button
-							title='+ Lijstje aanmaken'
-							disabled={!newListName}
-							color={colors.primary}
-							onPress={createNewShoppingList}
-						/>
-					</View>
-				</View>
+				<NewListModalContent
+					closeModal={() => setOpenListModal(false)}
+					addNewShoppingList={(newList) =>
+						setShoppingLists([newList, ...shoppingLists])
+					}
+					navigateToNewShoppingListScreen={(
+						newListUuid,
+						newListName
+					) =>
+						navigation.navigate('List', {
+							listUuid: newListUuid,
+							listName: newListName
+						})
+					}
+				/>
 			</Modal>
 		</SafeAreaContainer>
 	)
