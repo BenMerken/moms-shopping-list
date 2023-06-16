@@ -4,7 +4,7 @@ import AsyncStorage, {
 } from '@react-native-async-storage/async-storage'
 import {useHeaderHeight} from '@react-navigation/elements'
 import {useTheme} from '@react-navigation/native'
-import {useEffect, useMemo, useState} from 'react'
+import {Dispatch, SetStateAction, useEffect, useMemo, useState} from 'react'
 import {
 	Alert,
 	Button,
@@ -25,9 +25,76 @@ type ListItemProps = {
 	item: ShoppingListItem
 }
 
+type NewItemControlsProps = {
+	shoppingList: ShoppingList | undefined
+	setShoppingList: Dispatch<SetStateAction<ShoppingList | undefined>>
+}
+
+const NewItemControls = ({
+	shoppingList,
+	setShoppingList
+}: NewItemControlsProps) => {
+	const [newItemName, setNewItemName] = useState('')
+
+	const {colors} = useTheme()
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				input: {
+					marginBottom: 16
+				}
+			}),
+		[]
+	)
+
+	const addItem = async () => {
+		if (
+			shoppingList!
+				.items!.map((item) => item.toLowerCase())
+				.includes(newItemName.toLowerCase())
+		) {
+			Alert.alert(
+				`Er bestaat al een artikel met naam "${newItemName}" in dit lijstje`
+			)
+
+			return
+		}
+
+		const newShoppingList = {
+			...shoppingList!,
+			items: [...shoppingList!.items!, newItemName]
+		}
+
+		await AsyncStorage.mergeItem(
+			shoppingList!.uuid,
+			JSON.stringify(newShoppingList)
+		)
+		setShoppingList(newShoppingList)
+		setNewItemName('')
+	}
+
+	return (
+		<>
+			<CustomTextInput
+				inputGroupStyle={styles.input}
+				label='Naam artikel'
+				value={newItemName}
+				placeholder='bijv. "Boter/Kaas/eieren..."'
+				onChangeText={(newName) => setNewItemName(newName)}
+			/>
+			<Button
+				title='+ Artikel toevoegen'
+				disabled={!newItemName}
+				color={colors.primary}
+				onPress={addItem}
+			/>
+		</>
+	)
+}
+
 const ListScreen = ({route}: StackScreenProps<'List'>) => {
 	const [shoppingList, setShoppingList] = useState<ShoppingList>()
-	const [newItemName, setNewItemName] = useState('')
 
 	const headerHeight = useHeaderHeight()
 
@@ -64,9 +131,6 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 					...text.subtitle,
 					width: layout.window.widthWithMargin,
 					color: colors.text
-				},
-				input: {
-					marginBottom: 16
 				}
 			}),
 		[colors, text, theme, layout]
@@ -100,32 +164,6 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 		)
 	}
 
-	const addItem = async () => {
-		if (
-			shoppingList!
-				.items!.map((item) => item.toLowerCase())
-				.includes(newItemName.toLowerCase())
-		) {
-			Alert.alert(
-				`Er bestaat al een artikel met naam "${newItemName}" in dit lijstje`
-			)
-
-			return
-		}
-
-		const newShoppingList = {
-			...shoppingList!,
-			items: [...shoppingList!.items!, newItemName]
-		}
-
-		await AsyncStorage.mergeItem(
-			shoppingList!.uuid,
-			JSON.stringify(newShoppingList)
-		)
-		setShoppingList(newShoppingList)
-		setNewItemName('')
-	}
-
 	useEffect(() => {
 		const getShoppingList = async () => {
 			const shoppingListFromStorage = await getItem()
@@ -157,18 +195,9 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 				behavior='padding'
 			>
 				<Text style={styles.newItemFormTitle}>Nieuw Artikel</Text>
-				<CustomTextInput
-					inputGroupStyle={styles.input}
-					label='Naam artikel'
-					value={newItemName}
-					placeholder='bijv. "Boter/Kaas/eieren..."'
-					onChangeText={(newName) => setNewItemName(newName)}
-				/>
-				<Button
-					title='+ Artikel toevoegen'
-					disabled={!newItemName}
-					color={colors.primary}
-					onPress={addItem}
+				<NewItemControls
+					shoppingList={shoppingList}
+					setShoppingList={setShoppingList}
 				/>
 			</KeyboardAvoidingView>
 		</SafeAreaContainer>
