@@ -1,7 +1,7 @@
 import {FontAwesome} from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {useTheme} from '@react-navigation/native'
-import {useEffect, useMemo, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {
 	Alert,
 	Button,
@@ -26,7 +26,10 @@ type ShoppingListItemProps = {
 type NewListModalContentProps = {
 	addNewShoppingList: (newList: ShoppingList) => void
 	closeModal: () => void
-	navigateToNewShoppingListScreen: (newListUuid: string, newListName: string) => void
+	navigateToNewShoppingListScreen: (
+		newListUuid: string,
+		newListName: string
+	) => void
 }
 
 const NewListModalContent = ({
@@ -38,31 +41,27 @@ const NewListModalContent = ({
 
 	const [newListName, setNewListName] = useState('')
 
-	const styles = useMemo(
-		() =>
-			StyleSheet.create({
-				modalBackground: {
-					flex: 1,
-					justifyContent: 'center',
-					alignItems: 'center'
-				},
-				modalContent: {
-					...theme.dropShadow,
-					padding: 16,
-					backgroundColor: colors.card,
-					borderRadius: 8
-				},
-				modalTopRow: {
-					flexDirection: 'row',
-					justifyContent: 'space-between',
-					alignContent: 'center'
-				},
-				input: {
-					marginBottom: 16
-				}
-			}),
-		[colors.card]
-	)
+	const styles = StyleSheet.create({
+		modalBackground: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		modalContent: {
+			...theme.dropShadow,
+			padding: 16,
+			backgroundColor: colors.card,
+			borderRadius: 8
+		},
+		modalTopRow: {
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignContent: 'center'
+		},
+		input: {
+			marginBottom: 16
+		}
+	})
 
 	const createNewShoppingList = async () => {
 		try {
@@ -127,62 +126,58 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 
 	const {colors} = useTheme()
 
-	const styles = useMemo(
-		() =>
-			StyleSheet.create({
-				addButton: {
-					...theme.dropShadow,
-					bottom: 16,
-					right: 16,
-					alignSelf: 'flex-end',
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
-					height: 64,
-					width: 64,
-					backgroundColor: colors.primary,
-					borderRadius: 50
-				},
-				noShoppingListsPlaceholder: {
-					flexGrow: 1,
-					justifyContent: 'center',
-					alignItems: 'center',
-					gap: 32
-				},
-				placeholderText: {
-					...text.text,
-					width: layout.window.widthWithMargin,
-					textAlign: 'center',
-					color: colors.text
-				},
-				shoppingLists: {
-					flexGrow: 1,
-					alignItems: 'center',
-					gap: 8
-				},
-				shoppingListItem: {
-					...theme.dropShadow,
-					flexDirection: 'row',
-					flexWrap: 'wrap',
-					gap: 4,
-					paddingTop: 40,
-					padding: 16,
-					width: layout.window.widthWithMargin,
-					backgroundColor: colors.card
-				},
-				listItemCloseIcon: {
-					position: 'absolute',
-					top: 16,
-					right: 16
-				},
-				shoppingListName: {
-					...text.text,
-					fontWeight: '700',
-					color: colors.text
-				}
-			}),
-		[colors, theme.dropShadow, layout.window.widthWithMargin, text]
-	)
+	const styles = StyleSheet.create({
+		addButton: {
+			...theme.dropShadow,
+			bottom: 16,
+			right: 16,
+			alignSelf: 'flex-end',
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: 64,
+			width: 64,
+			backgroundColor: colors.primary,
+			borderRadius: 50
+		},
+		noShoppingListsPlaceholder: {
+			flexGrow: 1,
+			justifyContent: 'center',
+			alignItems: 'center',
+			gap: 32
+		},
+		placeholderText: {
+			...text.text,
+			width: layout.window.widthWithMargin,
+			textAlign: 'center',
+			color: colors.text
+		},
+		shoppingLists: {
+			flexGrow: 1,
+			alignItems: 'center',
+			gap: 8
+		},
+		shoppingListItem: {
+			...theme.dropShadow,
+			flexDirection: 'row',
+			flexWrap: 'wrap',
+			gap: 4,
+			paddingTop: 40,
+			padding: 16,
+			width: layout.window.widthWithMargin,
+			backgroundColor: colors.card
+		},
+		listItemCloseIcon: {
+			position: 'absolute',
+			top: 16,
+			right: 16
+		},
+		shoppingListName: {
+			...text.text,
+			fontWeight: '700',
+			color: colors.text
+		}
+	})
 
 	const removeListItem = async (uuid: string) => {
 		await AsyncStorage.removeItem(uuid, () => {

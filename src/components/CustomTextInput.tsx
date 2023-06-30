@@ -1,5 +1,4 @@
 import {useTheme} from '@react-navigation/native'
-import {useMemo} from 'react'
 import {
 	StyleSheet,
 	Text,
@@ -24,24 +23,20 @@ const CustomTextInput = ({
 }: CustomTextInputProps) => {
 	const {colors} = useTheme()
 
-	const styles = useMemo(
-		() =>
-			StyleSheet.create({
-				inputGroup: {
-					padding: 8,
-					width: layout.window.widthWithMargin,
-					borderWidth: 1,
-					borderColor: colors.border,
-					borderRadius: 8
-				},
-				input: {
-					...text.text,
-					padding: 8,
-					color: colors.text
-				}
-			}),
-		[colors, text, layout]
-	)
+	const styles = StyleSheet.create({
+		inputGroup: {
+			padding: 8,
+			width: layout.window.widthWithMargin,
+			borderWidth: 1,
+			borderColor: colors.border,
+			borderRadius: 8
+		},
+		input: {
+			...text.text,
+			padding: 8,
+			color: colors.text
+		}
+	})
 
 	return (
 		<View style={{...styles.inputGroup, ...inputGroupStyle}}>

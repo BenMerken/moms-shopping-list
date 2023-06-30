@@ -1,29 +1,22 @@
-import {FontAwesome} from '@expo/vector-icons'
 import AsyncStorage, {
 	useAsyncStorage
 } from '@react-native-async-storage/async-storage'
 import {useHeaderHeight} from '@react-navigation/elements'
 import {useTheme} from '@react-navigation/native'
-import {Dispatch, SetStateAction, useEffect, useMemo, useState} from 'react'
+import {Dispatch, SetStateAction, useEffect, useState} from 'react'
 import {
 	Alert,
 	Button,
-	FlatList,
 	KeyboardAvoidingView,
 	StyleSheet,
 	Text,
-	TouchableOpacity,
 	View
 } from 'react-native'
 
 import {CustomTextInput, SafeAreaContainer} from '@components/index'
 import layout from '@utils/layout'
 import text from '@utils/text'
-import theme from '@utils/theme'
-
-type ListItemProps = {
-	item: ShoppingListItem
-}
+import List from './List'
 
 type NewItemControlsProps = {
 	shoppingList: ShoppingList | undefined
@@ -38,15 +31,11 @@ const NewItemControls = ({
 
 	const {colors} = useTheme()
 
-	const styles = useMemo(
-		() =>
-			StyleSheet.create({
-				input: {
-					marginBottom: 16
-				}
-			}),
-		[]
-	)
+	const styles = StyleSheet.create({
+		input: {
+			marginBottom: 16
+		}
+	})
 
 	const addItem = async () => {
 		if (
@@ -100,69 +89,25 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 
 	const {colors} = useTheme()
 
-	const styles = useMemo(
-		() =>
-			StyleSheet.create({
-				shoppingListItems: {
-					alignItems: 'center'
-				},
-				noItemsPlaceholder: {
-					flex: 1,
-					justifyContent: 'center',
-					alignItems: 'center'
-				},
-				shoppingListItem: {
-					...theme.dropShadow,
-					flexDirection: 'row',
-					flexWrap: 'wrap',
-					alignItems: 'center',
-					gap: 32,
-					marginBottom: 8,
-					padding: 16,
-					width: layout.window.widthWithMargin,
-					backgroundColor: colors.card
-				},
-				newItemForm: {
-					justifyContent: 'center',
-					alignItems: 'center',
-					marginBottom: 32
-				},
-				newItemFormTitle: {
-					...text.subtitle,
-					width: layout.window.widthWithMargin,
-					color: colors.text
-				}
-			}),
-		[colors, text, theme, layout]
-	)
+	const styles = StyleSheet.create({
+		noItemsPlaceholder: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		newItemForm: {
+			justifyContent: 'center',
+			alignItems: 'center',
+			marginBottom: 32
+		},
+		newItemFormTitle: {
+			...text.subtitle,
+			width: layout.window.widthWithMargin,
+			color: colors.text
+		}
+	})
 
 	const {getItem} = useAsyncStorage(route.params.listUuid)
-
-	const _listItem = ({item}: ListItemProps) => {
-		const removeItem = async () => {
-			const newShoppingList = {
-				...shoppingList!,
-				items: shoppingList!.items!.filter(
-					(itemOnList) => itemOnList !== item
-				)
-			}
-
-			await AsyncStorage.mergeItem(
-				shoppingList!.uuid,
-				JSON.stringify(newShoppingList)
-			)
-			setShoppingList(newShoppingList)
-		}
-
-		return (
-			<View key={item} style={styles.shoppingListItem}>
-				<TouchableOpacity onPress={removeItem}>
-					<FontAwesome name='close' size={24} color={colors.text} />
-				</TouchableOpacity>
-				<Text style={{...text.text, color: colors.text}}>{item}</Text>
-			</View>
-		)
-	}
 
 	useEffect(() => {
 		const getShoppingList = async () => {
@@ -183,10 +128,9 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 					</Text>
 				</View>
 			) : (
-				<FlatList
-					contentContainerStyle={styles.shoppingListItems}
-					data={shoppingList?.items}
-					renderItem={_listItem}
+				<ListScreen.List
+					shoppingList={shoppingList}
+					setShoppingList={setShoppingList}
 				/>
 			)}
 			<KeyboardAvoidingView
@@ -203,5 +147,7 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 		</SafeAreaContainer>
 	)
 }
+
+ListScreen.List = List
 
 export default ListScreen
