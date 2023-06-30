@@ -111,6 +111,8 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 			shoppingList.uuid,
 			JSON.stringify(newShoppingList)
 		)
+		// Since the parent FlatList's keyboardShouldPersistTaps prop will prevent the TextInput from blurring,
+		// it must be triggered manually.
 		inputRef.current?.blur()
 	}
 
