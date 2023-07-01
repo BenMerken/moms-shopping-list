@@ -56,7 +56,11 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 		}
 	})
 
-	const selection = itemValue.length
+	// This sets the cursor behind the input text (for some reason, the selection prop on TextInput does not work).
+	const cursorPosition = itemValue.length
+	inputRef.current?.setNativeProps({
+		selection: {start: cursorPosition, end: cursorPosition}
+	})
 
 	const removeItem = async () => {
 		const newShoppingList = {
@@ -148,7 +152,6 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 					editable={editing}
 					style={{...text.text, color: colors.text}}
 					value={itemValue}
-					selection={{start: selection, end: selection}}
 					onChangeText={handleItemTextChange}
 					onBlur={handleInputBlur}
 				/>
@@ -173,7 +176,7 @@ const List = ({shoppingList, setShoppingList}: ListProps) => {
 
 	return (
 		<FlatList
-			// This prop necessary to tap the save icon for the list item input,
+			// This prop is necessary to be able to tap the save icon for the list item input,
 			// since tapping outside the input ignores other click events by default.
 			keyboardShouldPersistTaps='always'
 			contentContainerStyle={styles.shoppingListItems}
