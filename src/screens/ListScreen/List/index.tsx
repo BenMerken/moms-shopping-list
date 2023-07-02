@@ -154,6 +154,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 					value={itemValue}
 					onChangeText={handleItemTextChange}
 					onBlur={handleInputBlur}
+					onSubmitEditing={handleSaveTap}
 				/>
 			</View>
 			<TouchableOpacity onPress={editing ? handleSaveTap : handleEditTap}>
