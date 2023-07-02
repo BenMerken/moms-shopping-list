@@ -48,14 +48,15 @@ const ListItem = ({
 		shoppingListItem: {
 			...theme.dropShadow,
 			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			gap: 16,
 			padding: 16,
 			width: layout.window.widthWithMargin,
 			backgroundColor: colors.card
 		},
-		listItemLeft: {
-			flexDirection: 'row',
-			alignItems: 'center',
-			gap: 32
+		listItemTextContainer: {
+			flexShrink: 1
 		},
 		shoppingListName: {
 			...text.text,
@@ -144,27 +145,24 @@ const ListItem = ({
 				})
 			}}
 		>
-			<View style={styles.listItemLeft}>
-				<TouchableOpacity onPress={() => removeListItem(uuid)}>
-					<FontAwesome name='close' color={colors.text} size={24} />
-				</TouchableOpacity>
-				<View>
-					<TextInput
-						ref={inputRef}
-						editable={editing}
-						style={styles.shoppingListName}
-						value={listName}
-						onChangeText={handleItemTextChange}
-						onBlur={handleInputBlur}
-						onSubmitEditing={handleSaveTap}
-					/>
-					<Text style={{...text.text, color: colors.text}}>
-						aangemaakt op{' '}
-						{`${createdAtDate.toLocaleDateString(
-							'nl-BE'
-						)}, om ${createdAtDate.toLocaleTimeString('nl-BE')}`}
-					</Text>
-				</View>
+			<TouchableOpacity onPress={() => removeListItem(uuid)}>
+				<FontAwesome name='close' color={colors.text} size={24} />
+			</TouchableOpacity>
+			<View style={styles.listItemTextContainer}>
+				<TextInput
+					ref={inputRef}
+					editable={editing}
+					style={styles.shoppingListName}
+					value={listName}
+					onChangeText={handleItemTextChange}
+					onBlur={handleInputBlur}
+					onSubmitEditing={handleSaveTap}
+				/>
+				<Text style={{...text.text, color: colors.text}}>
+					{`aangemaakt op ${createdAtDate.toLocaleDateString(
+						'nl-BE'
+					)}, om ${createdAtDate.toLocaleTimeString('nl-BE')}`}
+				</Text>
 			</View>
 			<TouchableOpacity onPress={editing ? handleSaveTap : handleEditTap}>
 				<FontAwesome
@@ -198,6 +196,7 @@ const ShoppingListsList = ({
 			data={shoppingLists}
 			renderItem={(item) => (
 				<ListItem
+					key={item.item.uuid}
 					shoppingLists={shoppingLists}
 					setShoppingLists={setShoppingLists}
 					item={item}

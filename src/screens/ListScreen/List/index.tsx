@@ -52,7 +52,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 		},
 		shoppingListItemLeft: {
 			flexDirection: 'row',
-			gap: 32
+			gap: 16
 		}
 	})
 
