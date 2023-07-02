@@ -88,7 +88,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 			return
 		}
 
-		if (itemValue === '') {
+		if (itemValue.trim() === '') {
 			return
 		}
 
@@ -142,7 +142,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	}, [editing])
 
 	return (
-		<View key={item} style={styles.shoppingListItem}>
+		<View style={styles.shoppingListItem}>
 			<View style={styles.shoppingListItemLeft}>
 				<TouchableOpacity onPress={removeItem}>
 					<FontAwesome name='close' size={24} color={colors.text} />
