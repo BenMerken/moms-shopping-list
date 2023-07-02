@@ -5,7 +5,6 @@ import {useEffect, useState} from 'react'
 import {
 	Alert,
 	Button,
-	FlatList,
 	Modal,
 	StyleSheet,
 	Text,
@@ -18,10 +17,7 @@ import {CustomTextInput, SafeAreaContainer} from '@components/index'
 import layout from '@utils/layout'
 import text from '@utils/text'
 import theme from '@utils/theme'
-
-type ShoppingListItemProps = {
-	item: ShoppingList
-}
+import ShoppingListsList from './List'
 
 type NewListModalContentProps = {
 	addNewShoppingList: (newList: ShoppingList) => void
@@ -151,73 +147,8 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 			width: layout.window.widthWithMargin,
 			textAlign: 'center',
 			color: colors.text
-		},
-		shoppingLists: {
-			flexGrow: 1,
-			alignItems: 'center',
-			gap: 8
-		},
-		shoppingListItem: {
-			...theme.dropShadow,
-			flexDirection: 'row',
-			flexWrap: 'wrap',
-			gap: 4,
-			paddingTop: 40,
-			padding: 16,
-			width: layout.window.widthWithMargin,
-			backgroundColor: colors.card
-		},
-		listItemCloseIcon: {
-			position: 'absolute',
-			top: 16,
-			right: 16
-		},
-		shoppingListName: {
-			...text.text,
-			fontWeight: '700',
-			color: colors.text
 		}
 	})
-
-	const removeListItem = async (uuid: string) => {
-		await AsyncStorage.removeItem(uuid, () => {
-			setShoppingLists([
-				...shoppingLists.filter((list) => list.uuid !== uuid)
-			])
-		})
-	}
-
-	const _shoppingListItem = ({item}: ShoppingListItemProps) => {
-		const createdAt = new Date(item.createdAt || 0)
-
-		return (
-			<TouchableOpacity
-				style={styles.shoppingListItem}
-				onPress={(e) => {
-					e.preventDefault()
-					e.stopPropagation()
-					navigation.navigate('List', {
-						listUuid: item.uuid,
-						listName: item.name
-					})
-				}}
-			>
-				<TouchableOpacity
-					style={styles.listItemCloseIcon}
-					onPress={() => removeListItem(item.uuid)}
-				>
-					<FontAwesome name='close' color={colors.text} size={24} />
-				</TouchableOpacity>
-				<Text style={styles.shoppingListName}>{item.name},</Text>
-				<Text style={{...text.text, color: colors.text}}>
-					aangemaakt op{' '}
-					{`${createdAt.toLocaleDateString(
-						'nl-BE'
-					)}, om ${createdAt.toLocaleTimeString('nl-BE')}`}
-				</Text>
-			</TouchableOpacity>
-		)
-	}
 
 	// Get the shopping lists in app storage, and add them to the component's state.
 	useEffect(() => {
@@ -245,10 +176,9 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 			{loadingShoppingLists ? (
 				<Text>Laden...</Text>
 			) : shoppingLists.length ? (
-				<FlatList
-					contentContainerStyle={styles.shoppingLists}
-					data={shoppingLists}
-					renderItem={_shoppingListItem}
+				<ShoppingListsList
+					shoppingLists={shoppingLists}
+					setShoppingLists={setShoppingLists}
 				/>
 			) : (
 				<View style={styles.noShoppingListsPlaceholder}>
