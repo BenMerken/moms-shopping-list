@@ -1,6 +1,6 @@
 import {FontAwesome} from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {useTheme} from '@react-navigation/native'
+import {useIsFocused, useTheme} from '@react-navigation/native'
 import {useEffect, useState} from 'react'
 import {
 	Alert,
@@ -122,6 +122,8 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 
 	const {colors} = useTheme()
 
+	const isFocused = useIsFocused()
+
 	const styles = StyleSheet.create({
 		addButton: {
 			...theme.dropShadow,
@@ -150,26 +152,28 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 		}
 	})
 
-	// Get the shopping lists in app storage, and add them to the component's state.
+	// Get the shopping lists in app storage, and add them to the component's state, if the Home screen becomes focused.
 	useEffect(() => {
-		const getShoppingListsFromStorage = async () => {
-			const shoppingListsKeys = await AsyncStorage.getAllKeys()
-			const shoppingListsFromStorage = (await AsyncStorage.multiGet(
-				shoppingListsKeys
-			).then((storage) =>
-				storage.map((d) => d[1] && JSON.parse(d[1]))
-			)) as ShoppingList[]
+		if (isFocused) {
+			const getShoppingListsFromStorage = async () => {
+				const shoppingListsKeys = await AsyncStorage.getAllKeys()
+				const shoppingListsFromStorage = (await AsyncStorage.multiGet(
+					shoppingListsKeys
+				).then((storage) =>
+					storage.map((d) => d[1] && JSON.parse(d[1]))
+				)) as ShoppingList[]
 
-			setShoppingLists(
-				shoppingListsFromStorage.sort((a, b) =>
-					a.createdAt > b.createdAt ? -1 : 0
+				setShoppingLists(
+					shoppingListsFromStorage.sort((a, b) =>
+						a.createdAt > b.createdAt ? -1 : 0
+					)
 				)
-			)
-		}
+			}
 
-		getShoppingListsFromStorage()
-		setLoadingShoppingLists(false)
-	}, [])
+			getShoppingListsFromStorage()
+			setLoadingShoppingLists(false)
+		}
+	}, [isFocused])
 
 	return (
 		<SafeAreaContainer>
