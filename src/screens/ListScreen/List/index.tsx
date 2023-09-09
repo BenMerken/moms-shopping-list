@@ -6,8 +6,10 @@ import {
 	Alert,
 	FlatList,
 	ListRenderItemInfo,
+	NativeSyntheticEvent,
 	StyleSheet,
 	TextInput,
+	TextInputFocusEventData,
 	TouchableOpacity,
 	View
 } from 'react-native'
@@ -117,12 +119,17 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 		)
 		// Since the parent FlatList's keyboardShouldPersistTaps prop will prevent the TextInput from blurring,
 		// it must be triggered manually.
-		inputRef.current?.blur()
+		handleInputBlur(null, itemValue)
 	}
 
 	// Set the editing boolean back to false, to make the text input directly uneditable again.
-	const handleInputBlur = () => {
+	const handleInputBlur = (
+		_: NativeSyntheticEvent<TextInputFocusEventData> | null,
+		newValue?: string
+	) => {
 		setEditing(false)
+		// This is a safety reset, in case the user would click away from the input, without explicitly saving the new value.
+		setItemValue(newValue ?? item)
 	}
 
 	const handleItemTextChange = (text: string) => {
