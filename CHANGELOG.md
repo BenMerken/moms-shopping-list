@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 
 -	Add input blurring to the list name and list item name inputs when clicking other controls, and erase unsaved changes upon input blur.	
+-	Add mising `devDependency` to `package.json`, `prettier`.
 
 ## [1.2.0] - 2023-07-02
 
