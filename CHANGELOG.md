@@ -8,10 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
--	Add input blurring to the list name and list item name inputs when clicking other controls, and erase unsaved changes upon input blur.	
--	Add mising `devDependencies` to `package.json`, `prettier`, `@typescript-eslint/parser`, `eslint`, and `eslint-config-prettier`.
--	Fix `.eslintrc`.
+-   Add input blurring to the list name and list item name inputs when clicking other controls, and erase unsaved changes upon input blur.
+-   Add mising `devDependencies` to `package.json`, `prettier`, `@typescript-eslint/parser`, `eslint`, and `eslint-config-prettier`.
+-   Fix `.eslintrc`.
 -   ([#1]) Fix bug, where the FlatList components in the shopping list and shopping list item screens would visibly remove the wrong item.
+-   ([#3]) Fix issue where editing a shopping list item would not correctly set the new shopping list item value on first rerender.
 
 ## [1.2.0] - 2023-07-02
 
@@ -57,3 +58,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [1.1.0]: https://github.com/BenMerken/moms-shopping-list/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/BenMerken/moms-shopping-list/releases/tag/v1.0.0
 [#1]: https://github.com/BenMerken/moms-shopping-list/issues/1
+[#3]: https://github.com/BenMerken/moms-shopping-list/pull/3
