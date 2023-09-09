@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 -	Add input blurring to the list name and list item name inputs when clicking other controls, and erase unsaved changes upon input blur.	
 -	Add mising `devDependencies` to `package.json`, `prettier`, `@typescript-eslint/parser`, `eslint`, and `eslint-config-prettier`.
 -	Fix `.eslintrc`.
+-   ([#1]) Fix bug, where the FlatList components in the shopping list and shopping list item screens would visibly remove the wrong item.
 
 ## [1.2.0] - 2023-07-02
 

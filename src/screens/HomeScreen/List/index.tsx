@@ -196,6 +196,7 @@ const ShoppingListsList = ({
 			keyboardShouldPersistTaps='always'
 			contentContainerStyle={styles.shoppingLists}
 			data={shoppingLists}
+			keyExtractor={(item) => item.uuid}
 			renderItem={(item) => (
 				<ListItem
 					key={item.item.uuid}

@@ -189,6 +189,7 @@ const List = ({shoppingList, setShoppingList}: ListProps) => {
 			keyboardShouldPersistTaps='always'
 			contentContainerStyle={styles.shoppingListItems}
 			data={shoppingList?.items}
+			keyExtractor={(item) => item}
 			renderItem={(item) => (
 				<ListItem
 					shoppingList={shoppingList}
