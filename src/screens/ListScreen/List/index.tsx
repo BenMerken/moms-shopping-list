@@ -71,7 +71,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 		}
 
 		await AsyncStorage.mergeItem(
-			shoppingList!.uuid,
+			shoppingList.uuid,
 			JSON.stringify(newShoppingList)
 		)
 		setShoppingList(newShoppingList)
@@ -115,6 +115,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 			shoppingList.uuid,
 			JSON.stringify(newShoppingList)
 		)
+		setShoppingList(newShoppingList)
 		// Since the parent FlatList's keyboardShouldPersistTaps prop will prevent the TextInput from blurring,
 		// it must be triggered manually.
 		inputRef.current?.blur()
@@ -123,6 +124,8 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	// Set the editing boolean back to false, to make the text input directly uneditable again.
 	const handleInputBlur = () => {
 		setEditing(false)
+		// This is a safety reset, in case the user would click away from the input, without explicitly saving the new value.
+		setItemValue(item)
 	}
 
 	const handleItemTextChange = (text: string) => {
@@ -182,6 +185,7 @@ const List = ({shoppingList, setShoppingList}: ListProps) => {
 			keyboardShouldPersistTaps='always'
 			contentContainerStyle={styles.shoppingListItems}
 			data={shoppingList?.items}
+			keyExtractor={(item) => item}
 			renderItem={(item) => (
 				<ListItem
 					shoppingList={shoppingList}

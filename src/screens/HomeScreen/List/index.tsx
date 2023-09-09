@@ -115,6 +115,8 @@ const ListItem = ({
 	// Set the editing boolean back to false, to make the text input directly uneditable again.
 	const handleInputBlur = () => {
 		setEditing(false)
+		// This is a safety reset, in case the user would click away from the input, without explicitly saving the new value.
+		setListName(name)
 	}
 
 	const handleItemTextChange = (text: string) => {
@@ -194,6 +196,7 @@ const ShoppingListsList = ({
 			keyboardShouldPersistTaps='always'
 			contentContainerStyle={styles.shoppingLists}
 			data={shoppingLists}
+			keyExtractor={(item) => item.uuid}
 			renderItem={(item) => (
 				<ListItem
 					key={item.item.uuid}
