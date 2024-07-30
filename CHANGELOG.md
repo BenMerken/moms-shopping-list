@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] -2024-07-30
+
+### Fixed
+
+- Upgrade the Expo framework version to 51.
+- Upgrade npm depenedencies, in order to fix vulnerabilities.
+- Remove `eas-cli`, because of unfixable vulnerabilities with `dicer` and `semver`, so from now on, install and maintain the `eas-cli` globally.
+
 ## [1.2.2] - 2023-11-08
 
 ### Fixed
