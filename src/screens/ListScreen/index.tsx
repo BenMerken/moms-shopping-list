@@ -12,6 +12,7 @@ import {
 	Text,
 	View
 } from 'react-native'
+import uuid from 'react-native-uuid'
 
 import {CustomTextInput, SafeAreaContainer} from '@components/index'
 import layout from '@utils/layout'
@@ -40,7 +41,7 @@ const NewItemControls = ({
 	const addItem = async () => {
 		if (
 			shoppingList!
-				.items!.map((item) => item.toLowerCase())
+				.items!.map((item) => item.name.toLowerCase())
 				.includes(newItemName.toLowerCase())
 		) {
 			Alert.alert(
@@ -52,7 +53,14 @@ const NewItemControls = ({
 
 		const newShoppingList = {
 			...shoppingList!,
-			items: [...shoppingList!.items!, newItemName]
+			items: [
+				...shoppingList!.items!,
+				{
+					uuid: uuid.v4().toString(),
+					order: shoppingList!.items.length,
+					name: newItemName
+				}
+			]
 		}
 
 		await AsyncStorage.mergeItem(
@@ -113,7 +121,32 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 		const getShoppingList = async () => {
 			const shoppingListFromStorage = await getItem()
 
-			setShoppingList(JSON.parse(shoppingListFromStorage!))
+			//TODO: Remove when database structure has been reconfigured on mom's device
+			const parsedList = JSON.parse(shoppingListFromStorage!)
+			const listItems = parsedList.items as unknown[]
+
+			const newShoppingList = {
+				...parsedList,
+				items: listItems.map((item, index) => {
+					if (typeof item === 'string') {
+						const itemObject: ShoppingListItem = {
+							uuid: uuid.v4().toString(),
+							order: index,
+							name: item
+						}
+
+						return itemObject
+					}
+
+					return item
+				})
+			}
+
+			await AsyncStorage.mergeItem(
+				parsedList.uuid,
+				JSON.stringify(newShoppingList)
+			)
+			setShoppingList(newShoppingList)
 		}
 
 		getShoppingList()

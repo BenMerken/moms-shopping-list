@@ -57,7 +57,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	})
 
 	// This sets the cursor behind the input text (for some reason, the selection prop on TextInput does not work).
-	const cursorPosition = itemValue.length
+	const cursorPosition = itemValue.name.length
 	inputRef.current?.setNativeProps({
 		selection: {start: cursorPosition, end: cursorPosition}
 	})
@@ -88,14 +88,14 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 			return
 		}
 
-		if (itemValue.trim() === '') {
+		if (itemValue.name.trim() === '') {
 			return
 		}
 
 		if (
 			shoppingList.items
-				.map((item) => item.toLowerCase())
-				.includes(itemValue.toLowerCase())
+				.map((item) => item.name.toLowerCase())
+				.includes(itemValue.name.toLowerCase())
 		) {
 			Alert.alert(
 				`Er bestaat al een artikel met naam "${itemValue}" in dit lijstje`
@@ -129,7 +129,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	}
 
 	const handleItemTextChange = (text: string) => {
-		setItemValue(text)
+		setItemValue({...itemValue, name: text})
 	}
 
 	// Use boolean flag to check whether the user wants to edit the list item
@@ -154,7 +154,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 					ref={inputRef}
 					editable={editing}
 					style={{...text.text, color: colors.text}}
-					value={itemValue}
+					value={itemValue.name}
 					onChangeText={handleItemTextChange}
 					onBlur={handleInputBlur}
 					onSubmitEditing={handleSaveTap}
@@ -186,7 +186,7 @@ const List = ({shoppingList, setShoppingList}: ListProps) => {
 			keyboardShouldPersistTaps='always'
 			contentContainerStyle={styles.shoppingListItems}
 			data={shoppingList?.items}
-			keyExtractor={(item) => item}
+			keyExtractor={(item) => item.uuid}
 			renderItem={(item) => (
 				<ListItem
 					shoppingList={shoppingList}

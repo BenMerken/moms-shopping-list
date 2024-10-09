@@ -61,7 +61,7 @@ const NewListModalContent = ({
 
 	const createNewShoppingList = async () => {
 		try {
-			const newListUuid = uuid.v4() as string
+			const newListUuid = uuid.v4().toString()
 			const newList: ShoppingList = {
 				uuid: newListUuid,
 				name: newListName,

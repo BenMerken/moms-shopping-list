@@ -1,4 +1,8 @@
-declare type ShoppingListItem = string
+declare type ShoppingListItem = {
+	uuid: string
+	order: number
+	name: string
+}
 
 declare type ShoppingList = {
 	uuid: string
