@@ -8,6 +8,7 @@ import {
 	Alert,
 	Button,
 	KeyboardAvoidingView,
+	Platform,
 	StyleSheet,
 	Text,
 	View
@@ -168,8 +169,7 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 			)}
 			<KeyboardAvoidingView
 				style={styles.newItemForm}
-				keyboardVerticalOffset={headerHeight + 32}
-				behavior='padding'
+				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 			>
 				<Text style={styles.newItemFormTitle}>Nieuw Artikel</Text>
 				<NewItemControls
