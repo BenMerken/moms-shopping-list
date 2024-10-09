@@ -1,7 +1,6 @@
 import AsyncStorage, {
 	useAsyncStorage
 } from '@react-native-async-storage/async-storage'
-import {useHeaderHeight} from '@react-navigation/elements'
 import {useTheme} from '@react-navigation/native'
 import {Dispatch, SetStateAction, useEffect, useState} from 'react'
 import {
@@ -93,8 +92,6 @@ const NewItemControls = ({
 
 const ListScreen = ({route}: StackScreenProps<'List'>) => {
 	const [shoppingList, setShoppingList] = useState<ShoppingList>()
-
-	const headerHeight = useHeaderHeight()
 
 	const {colors} = useTheme()
 
