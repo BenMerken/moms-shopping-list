@@ -185,7 +185,7 @@ const List = ({shoppingList, setShoppingList}: ListProps) => {
 			removeClippedSubviews={false}
 			keyboardShouldPersistTaps='always'
 			contentContainerStyle={styles.shoppingListItems}
-			data={shoppingList?.items}
+			data={shoppingList?.items.sort((item) => item.order)}
 			keyExtractor={(item) => item.uuid}
 			renderItem={(item) => (
 				<ListItem
