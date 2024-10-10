@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import useColorScheme from '@hooks/useColorScheme'
 import {HomeScreen, ListScreen} from '@screens/index'
 import theme from '@utils/theme'
-import {GestureHandlerRootView} from 'react-native-gesture-handler'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 type StackNavigatorProps = {
 	theme: Theme
@@ -53,11 +53,9 @@ const Navigation = () => {
 	const appTheme = colorScheme === 'dark' ? theme.dark : theme.light
 
 	return (
-		<GestureHandlerRootView style={{flex: 1}}>
-			<NavigationContainer theme={appTheme}>
-				<StackNavigator theme={appTheme} />
-			</NavigationContainer>
-		</GestureHandlerRootView>
+		<NavigationContainer theme={appTheme}>
+			<StackNavigator theme={appTheme} />
+		</NavigationContainer>
 	)
 }
 
