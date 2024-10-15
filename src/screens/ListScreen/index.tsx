@@ -24,6 +24,26 @@ type NewItemControlsProps = {
 	setShoppingList: Dispatch<SetStateAction<ShoppingList | undefined>>
 }
 
+const styles = StyleSheet.create({
+	input: {
+		marginBottom: 16
+	},
+	noItemsPlaceholder: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	newItemForm: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginBottom: 32
+	},
+	newItemFormTitle: {
+		...text.subtitle,
+		width: layout.window.widthWithMargin
+	}
+})
+
 const NewItemControls = ({
 	shoppingList,
 	setShoppingList
@@ -31,12 +51,6 @@ const NewItemControls = ({
 	const [newItemName, setNewItemName] = useState('')
 
 	const {colors} = useTheme()
-
-	const styles = StyleSheet.create({
-		input: {
-			marginBottom: 16
-		}
-	})
 
 	const addItem = async () => {
 		if (
@@ -94,24 +108,6 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 	const [shoppingList, setShoppingList] = useState<ShoppingList>()
 
 	const {colors} = useTheme()
-
-	const styles = StyleSheet.create({
-		noItemsPlaceholder: {
-			flex: 1,
-			justifyContent: 'center',
-			alignItems: 'center'
-		},
-		newItemForm: {
-			justifyContent: 'center',
-			alignItems: 'center',
-			marginBottom: 32
-		},
-		newItemFormTitle: {
-			...text.subtitle,
-			width: layout.window.widthWithMargin,
-			color: colors.text
-		}
-	})
 
 	const {getItem} = useAsyncStorage(route.params.listUuid)
 
