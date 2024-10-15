@@ -15,29 +15,26 @@ type DraggingItemProps = {
 		y: SharedValue<number>
 	}
 }
+
+const styles = StyleSheet.create({
+	draggingItem: {
+		...theme.dropShadow,
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		marginHorizontal: 'auto',
+		padding: 16,
+		width: layout.window.widthWithMargin
+	},
+	draggingItemLeft: {
+		flexDirection: 'row',
+		gap: 16
+	}
+})
+
 const DraggingItem = ({item, position}: DraggingItemProps) => {
 	const {colors} = useTheme()
-
-	const styles = StyleSheet.create({
-		draggingItem: {
-			...theme.dropShadow,
-			flexDirection: 'row',
-			flexWrap: 'wrap',
-			justifyContent: 'space-between',
-			alignItems: 'center',
-			marginHorizontal: 'auto',
-			padding: 16,
-			width: layout.window.widthWithMargin,
-			backgroundColor: colors.card
-		},
-		draggingItemLeft: {
-			flexDirection: 'row',
-			gap: 16
-		},
-		draggingItemText: {
-			color: colors.text
-		}
-	})
 
 	return (
 		<Animated.View
@@ -50,7 +47,7 @@ const DraggingItem = ({item, position}: DraggingItemProps) => {
 		>
 			<View style={styles.draggingItemLeft}>
 				<FontAwesome name='close' size={24} color={colors.text} />
-				<Text style={styles.draggingItemText}>{item.name}</Text>
+				<Text style={{color: colors.text}}>{item.name}</Text>
 			</View>
 			<FontAwesome name='pencil' size={24} color={colors.text} />
 		</Animated.View>
@@ -60,9 +57,11 @@ const DraggingItem = ({item, position}: DraggingItemProps) => {
 type DraggingAreaContext = {
 	setDraggingItem: (item: ShoppingListItem) => void
 }
+
 const DraggingAreaContext = createContext<DraggingAreaContext>({
 	setDraggingItem: () => {}
 })
+
 const DragArea = ({children}: WithChildren) => {
 	const [draggingItem, setDraggingItem] = useState<ShoppingListItem | null>(
 		null
