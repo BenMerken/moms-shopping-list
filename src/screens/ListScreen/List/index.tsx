@@ -6,12 +6,14 @@ import {
 	Alert,
 	FlatList,
 	ListRenderItemInfo,
+	Pressable,
 	StyleSheet,
 	TextInput,
 	TouchableOpacity,
 	View
 } from 'react-native'
 
+import {useDraggingAreaContext} from '@components/DragArea'
 import layout from '@utils/layout'
 import text from '@utils/text'
 import theme from '@utils/theme'
@@ -33,8 +35,11 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	// Directly focusing the input should not be possible, to prevent the keyboard from sliding in, by accidently tapping the input field.
 	const [editing, setEditing] = useState(false)
 	const [itemValue, setItemValue] = useState(item)
+	const ref = useRef(null)
 
 	const inputRef = useRef<TextInput>(null)
+
+	const {setDraggingItem} = useDraggingAreaContext()
 
 	const {colors} = useTheme()
 
@@ -145,7 +150,11 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	}, [editing])
 
 	return (
-		<View style={styles.shoppingListItem}>
+		<Pressable
+			ref={ref}
+			style={styles.shoppingListItem}
+			onLongPress={() => setDraggingItem(item, ref)}
+		>
 			<View style={styles.shoppingListItemLeft}>
 				<TouchableOpacity onPress={removeItem}>
 					<FontAwesome name='close' size={24} color={colors.text} />
@@ -167,7 +176,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 					color={colors.text}
 				/>
 			</TouchableOpacity>
-		</View>
+		</Pressable>
 	)
 }
 
