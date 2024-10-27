@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import uuid from 'react-native-uuid'
 
-import {CustomTextInput, SafeAreaContainer, DragArea} from '@components/index'
+import {CustomTextInput, SafeAreaContainer} from '@components/index'
 import layout from '@utils/layout'
 import text from '@utils/text'
 import List from './List'
@@ -148,34 +148,30 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 
 	return (
 		<SafeAreaContainer>
-			<DragArea>
-				{!shoppingList?.items?.length ? (
-					<View style={styles.noItemsPlaceholder}>
-						<Text style={{...text.text, color: colors.text}}>
-							Dit lijstje is (nog) leeg...
-						</Text>
-					</View>
-				) : (
-					<ListScreen.List
-						shoppingList={shoppingList}
-						setShoppingList={setShoppingList}
-					/>
-				)}
-				<KeyboardAvoidingView
-					style={styles.newItemForm}
-					behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-				>
-					<Text
-						style={{...styles.newItemFormTitle, color: colors.text}}
-					>
-						Nieuw Artikel
+			{!shoppingList?.items?.length ? (
+				<View style={styles.noItemsPlaceholder}>
+					<Text style={{...text.text, color: colors.text}}>
+						Dit lijstje is (nog) leeg...
 					</Text>
-					<NewItemControls
-						shoppingList={shoppingList}
-						setShoppingList={setShoppingList}
-					/>
-				</KeyboardAvoidingView>
-			</DragArea>
+				</View>
+			) : (
+				<ListScreen.List
+					shoppingList={shoppingList}
+					setShoppingList={setShoppingList}
+				/>
+			)}
+			<KeyboardAvoidingView
+				style={styles.newItemForm}
+				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+			>
+				<Text style={{...styles.newItemFormTitle, color: colors.text}}>
+					Nieuw Artikel
+				</Text>
+				<NewItemControls
+					shoppingList={shoppingList}
+					setShoppingList={setShoppingList}
+				/>
+			</KeyboardAvoidingView>
 		</SafeAreaContainer>
 	)
 }
