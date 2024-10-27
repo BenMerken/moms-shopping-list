@@ -24,7 +24,6 @@ import Animated, {
 	withTiming
 } from 'react-native-reanimated'
 
-import layout from '@utils/layout'
 import text from '@utils/text'
 import theme from '@utils/theme'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
@@ -59,20 +58,15 @@ const styles = StyleSheet.create({
 		...theme.dropShadow,
 		flexDirection: 'row',
 		position: 'absolute',
-		flexWrap: 'wrap',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginBottom: 8,
 		padding: 16,
-		width: layout.window.widthWithMargin,
+		width: '100%',
 		height: ITEM_HEIGHT
 	},
 	shoppingListItemLeft: {
 		flexDirection: 'row',
 		gap: 16
-	},
-	shoppingListItems: {
-		alignItems: 'center'
 	}
 })
 
@@ -277,6 +271,8 @@ const ListItem = ({
 			}
 
 			isDragging.value = withDelay(200, withSpring(0))
+
+			// TODO: Update the position property of the items in DB
 		})
 
 	const removeItem = async () => {
@@ -450,12 +446,9 @@ const List = ({shoppingList, setShoppingList}: ListProps) => {
 			// since tapping outside the input ignores other click events by default.
 			removeClippedSubviews={false}
 			keyboardShouldPersistTaps='always'
-			contentContainerStyle={[
-				styles.shoppingListItems,
-				{
-					height: shoppingList.items.length * ITEM_HEIGHT
-				}
-			]}
+			contentContainerStyle={{
+				height: shoppingList.items.length * ITEM_HEIGHT
+			}}
 			data={shoppingList?.items.sort((item) => item.order)}
 			keyExtractor={(item) => item.uuid}
 			renderItem={(item) => (
