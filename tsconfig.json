@@ -9,13 +9,13 @@
 		"baseUrl": "src",
 		"noImplicitAny": true,
 		"paths": {
-			"@assets/*": ["../assets/*"],
-			"@components/*": ["components/*"],
-			"@hooks/*": ["hooks/*"],
-			"@navigation/*": ["navigation/*"],
-			"@screens/*": ["screens/*"],
+			"@/assets/*": ["../assets/*"],
+			"@/components/*": ["components/*"],
+			"@/hooks/*": ["hooks/*"],
+			"@/navigation/*": ["navigation/*"],
+			"@/screens/*": ["screens/*"],
 			"@/types/*": ["types/*"],
-			"@utils/*": ["utils/*"]
+			"@/utils/*": ["utils/*"]
 		}
 	}
 }

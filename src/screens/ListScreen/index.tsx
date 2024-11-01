@@ -13,9 +13,12 @@ import {
 	View
 } from 'react-native'
 
-import {CustomTextInput, SafeAreaContainer} from '@components/index'
-import layout from '@utils/layout'
-import text from '@utils/text'
+import {CustomTextInput, SafeAreaContainer} from '@/components/index'
+import {StackScreenProps} from '@/types/navigation'
+import {ShoppingList} from '@/types/shopping-list'
+import layout from '@/utils/layout'
+import text from '@/utils/text'
+
 import List from './List'
 
 type NewItemControlsProps = {

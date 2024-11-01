@@ -15,7 +15,7 @@ const useCachedResources = () => {
 				// Load fonts
 				await Font.loadAsync({
 					...FontAwesome.font,
-					Arial: require('@assets/fonts/Arial.ttf')
+					Arial: require('@/assets/fonts/Arial.ttf')
 				})
 			} catch (e) {
 				// We might want to provide this error information to an error reporting service
