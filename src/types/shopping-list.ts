@@ -1,10 +1,10 @@
-declare type ShoppingListItem = {
+export type ShoppingListItem = {
 	uuid: string
 	order: number
 	name: string
 }
 
-declare type ShoppingList = {
+export type ShoppingList = {
 	uuid: string
 	name: string
 	items: ShoppingListItem[]

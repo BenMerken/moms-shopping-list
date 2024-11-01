@@ -8,8 +8,8 @@ import {
 	ViewStyle
 } from 'react-native'
 
-import layout from '@utils/layout'
-import text from '@utils/text'
+import layout from '@/utils/layout'
+import text from '@/utils/text'
 
 type CustomTextInputProps = TextInputProps & {
 	label: string

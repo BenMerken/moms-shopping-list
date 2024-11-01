@@ -1,10 +1,10 @@
 import {NavigationContainer, Theme} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 
-import useColorScheme from '@hooks/useColorScheme'
-import {HomeScreen, ListScreen} from '@screens/index'
-import theme from '@utils/theme'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import useColorScheme from '@/hooks/use-color-scheme'
+import {HomeScreen, ListScreen} from '@/screens/index'
+import {StackParamList} from '@/types/navigation'
+import theme from '@/utils/theme'
 
 type StackNavigatorProps = {
 	theme: Theme

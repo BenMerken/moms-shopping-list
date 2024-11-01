@@ -2,7 +2,7 @@ import {registerRootComponent} from 'expo'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 
-import useCachedResources from './hooks/useCachedResources'
+import useCachedResources from './hooks/use-cached-resources'
 import Navigation from './navigation'
 
 const App = () => {

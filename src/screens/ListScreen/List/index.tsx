@@ -24,9 +24,10 @@ import Animated, {
 	withTiming
 } from 'react-native-reanimated'
 
-import text from '@utils/text'
-import theme from '@utils/theme'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
+import {ShoppingList, ShoppingListItem} from '@/types/shopping-list'
+import text from '@/utils/text'
+import theme from '@/utils/theme'
 
 type ListProps = {
 	shoppingList: ShoppingList

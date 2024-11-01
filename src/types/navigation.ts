@@ -1,4 +1,4 @@
-declare type StackParamList = {
+export type StackParamList = {
 	Home: undefined
 	List: {
 		listUuid: string
@@ -6,7 +6,7 @@ declare type StackParamList = {
 	}
 }
 
-declare type StackScreenProps<Screen extends keyof StackParamList> =
+export type StackScreenProps<Screen extends keyof StackParamList> =
 	import('@react-navigation/native-stack').NativeStackScreenProps<
 		StackParamList,
 		Screen
