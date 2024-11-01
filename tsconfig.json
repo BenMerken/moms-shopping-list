@@ -14,7 +14,7 @@
 			"@hooks/*": ["hooks/*"],
 			"@navigation/*": ["navigation/*"],
 			"@screens/*": ["screens/*"],
-			"@types/*": ["types/*"],
+			"@/types/*": ["types/*"],
 			"@utils/*": ["utils/*"]
 		}
 	}
