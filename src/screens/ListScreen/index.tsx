@@ -60,7 +60,7 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 			) : (
 				<List
 					items={shoppingList.items}
-					renderItem={(item) => (
+					renderItemContent={(item) => (
 						<ListItem
 							itemInfo={item}
 							shoppingList={shoppingList}

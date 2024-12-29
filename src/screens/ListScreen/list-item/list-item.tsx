@@ -139,7 +139,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	}, [editing])
 
 	return (
-		<View style={styles.shoppingListItem}>
+		<>
 			<View style={styles.shoppingListItemLeft}>
 				<TouchableOpacity onPress={removeItem}>
 					<FontAwesome name='close' size={24} color={colors.text} />
@@ -161,7 +161,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 					color={colors.text}
 				/>
 			</TouchableOpacity>
-		</View>
+		</>
 	)
 }
 
