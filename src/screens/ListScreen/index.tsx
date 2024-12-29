@@ -1,87 +1,16 @@
-import AsyncStorage, {
-	useAsyncStorage
-} from '@react-native-async-storage/async-storage'
+import {useAsyncStorage} from '@react-native-async-storage/async-storage'
 import {useHeaderHeight} from '@react-navigation/elements'
 import {useTheme} from '@react-navigation/native'
-import {Dispatch, SetStateAction, useEffect, useState} from 'react'
-import {
-	Alert,
-	Button,
-	KeyboardAvoidingView,
-	StyleSheet,
-	Text,
-	View
-} from 'react-native'
+import {useEffect, useState} from 'react'
+import {KeyboardAvoidingView, StyleSheet, Text, View} from 'react-native'
 
-import {CustomTextInput, SafeAreaContainer} from '@components/index'
+import {SafeAreaContainer} from '@components/index'
+import List from '@components/list/list'
 import layout from '@utils/layout'
 import text from '@utils/text'
 
-import List from './List/list'
-
-type NewItemControlsProps = {
-	shoppingList: ShoppingList | undefined
-	setShoppingList: Dispatch<SetStateAction<ShoppingList | undefined>>
-}
-
-const NewItemControls = ({
-	shoppingList,
-	setShoppingList
-}: NewItemControlsProps) => {
-	const [newItemName, setNewItemName] = useState('')
-
-	const {colors} = useTheme()
-
-	const styles = StyleSheet.create({
-		input: {
-			marginBottom: 16
-		}
-	})
-
-	const addItem = async () => {
-		if (
-			shoppingList!
-				.items!.map((item) => item.toLowerCase())
-				.includes(newItemName.toLowerCase())
-		) {
-			Alert.alert(
-				`Er bestaat al een artikel met naam "${newItemName}" in dit lijstje`
-			)
-
-			return
-		}
-
-		const newShoppingList = {
-			...shoppingList!,
-			items: [...shoppingList!.items!, newItemName]
-		}
-
-		await AsyncStorage.mergeItem(
-			shoppingList!.uuid,
-			JSON.stringify(newShoppingList)
-		)
-		setShoppingList(newShoppingList)
-		setNewItemName('')
-	}
-
-	return (
-		<>
-			<CustomTextInput
-				inputGroupStyle={styles.input}
-				label='Naam artikel'
-				value={newItemName}
-				placeholder='bijv. "Boter/Kaas/eieren..."'
-				onChangeText={(newName) => setNewItemName(newName)}
-			/>
-			<Button
-				title='+ Artikel toevoegen'
-				disabled={!newItemName}
-				color={colors.primary}
-				onPress={addItem}
-			/>
-		</>
-	)
-}
+import ListItem from './list-item/list-item'
+import NewItemControls from './list-item-controls/list-item-controls'
 
 const ListScreen = ({route}: StackScreenProps<'List'>) => {
 	const [shoppingList, setShoppingList] = useState<ShoppingList>()
@@ -130,8 +59,14 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 				</View>
 			) : (
 				<List
-					shoppingList={shoppingList}
-					setShoppingList={setShoppingList}
+					items={shoppingList.items}
+					renderItem={(item) => (
+						<ListItem
+							itemInfo={item}
+							shoppingList={shoppingList}
+							setShoppingList={setShoppingList}
+						/>
+					)}
 				/>
 			)}
 			<KeyboardAvoidingView

@@ -1,4 +1,7 @@
+import 'react-native-gesture-handler'
+
 import {registerRootComponent} from 'expo'
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 
 import useCachedResources from './hooks/useCachedResources'
@@ -11,9 +14,11 @@ const App = () => {
 		return null
 	} else {
 		return (
-			<SafeAreaProvider>
-				<Navigation />
-			</SafeAreaProvider>
+			<GestureHandlerRootView>
+				<SafeAreaProvider>
+					<Navigation />
+				</SafeAreaProvider>
+			</GestureHandlerRootView>
 		)
 	}
 }
