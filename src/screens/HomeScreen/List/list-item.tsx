@@ -2,9 +2,8 @@ import {FontAwesome} from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {useNavigation, useTheme} from '@react-navigation/native'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
-import {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {
-	FlatList,
 	ListRenderItemInfo,
 	StyleSheet,
 	Text,
@@ -17,12 +16,9 @@ import layout from '@utils/layout'
 import text from '@utils/text'
 import theme from '@utils/theme'
 
-type ShoppingListsListProps = {
-	shoppingLists: ShoppingList[]
-	setShoppingLists: Dispatch<SetStateAction<ShoppingList[]>>
-}
+import {ListProps} from './list'
 
-type ShoppingListItemProps = ShoppingListsListProps & {
+type ShoppingListItemProps = ListProps & {
 	item: ListRenderItemInfo<ShoppingList>
 }
 
@@ -177,37 +173,4 @@ const ListItem = ({
 	)
 }
 
-const ShoppingListsList = ({
-	shoppingLists,
-	setShoppingLists
-}: ShoppingListsListProps) => {
-	const styles = StyleSheet.create({
-		shoppingLists: {
-			flexGrow: 1,
-			alignItems: 'center',
-			gap: 8
-		}
-	})
-
-	return (
-		<FlatList
-			// This prop is necessary to be able to tap the save icon for the list item input,
-			// since tapping outside the input ignores other click events by default.
-			removeClippedSubviews={false}
-			keyboardShouldPersistTaps='always'
-			contentContainerStyle={styles.shoppingLists}
-			data={shoppingLists}
-			keyExtractor={(item) => item.uuid}
-			renderItem={(item) => (
-				<ListItem
-					key={item.item.uuid}
-					shoppingLists={shoppingLists}
-					setShoppingLists={setShoppingLists}
-					item={item}
-				/>
-			)}
-		/>
-	)
-}
-
-export default ShoppingListsList
+export default ListItem

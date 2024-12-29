@@ -17,7 +17,8 @@ import {CustomTextInput, SafeAreaContainer} from '@components/index'
 import layout from '@utils/layout'
 import text from '@utils/text'
 import theme from '@utils/theme'
-import ShoppingListsList from './List'
+
+import List from './List/list'
 
 type NewListModalContentProps = {
 	addNewShoppingList: (newList: ShoppingList) => void
@@ -180,7 +181,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 			{loadingShoppingLists ? (
 				<Text>Laden...</Text>
 			) : shoppingLists.length ? (
-				<ShoppingListsList
+				<List
 					shoppingLists={shoppingLists}
 					setShoppingLists={setShoppingLists}
 				/>

@@ -16,7 +16,8 @@ import {
 import {CustomTextInput, SafeAreaContainer} from '@components/index'
 import layout from '@utils/layout'
 import text from '@utils/text'
-import List from './List'
+
+import List from './List/list'
 
 type NewItemControlsProps = {
 	shoppingList: ShoppingList | undefined
@@ -128,7 +129,7 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 					</Text>
 				</View>
 			) : (
-				<ListScreen.List
+				<List
 					shoppingList={shoppingList}
 					setShoppingList={setShoppingList}
 				/>
@@ -147,7 +148,5 @@ const ListScreen = ({route}: StackScreenProps<'List'>) => {
 		</SafeAreaContainer>
 	)
 }
-
-ListScreen.List = List
 
 export default ListScreen

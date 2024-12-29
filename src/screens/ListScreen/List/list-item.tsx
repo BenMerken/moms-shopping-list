@@ -4,7 +4,6 @@ import {useTheme} from '@react-navigation/native'
 import {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react'
 import {
 	Alert,
-	FlatList,
 	ListRenderItemInfo,
 	StyleSheet,
 	TextInput,
@@ -15,11 +14,6 @@ import {
 import layout from '@utils/layout'
 import text from '@utils/text'
 import theme from '@utils/theme'
-
-type ListProps = {
-	shoppingList: ShoppingList
-	setShoppingList: Dispatch<SetStateAction<ShoppingList | undefined>>
-}
 
 type ListItemProps = {
 	itemInfo: ListRenderItemInfo<ShoppingListItem>
@@ -171,31 +165,4 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	)
 }
 
-const List = ({shoppingList, setShoppingList}: ListProps) => {
-	const styles = StyleSheet.create({
-		shoppingListItems: {
-			alignItems: 'center'
-		}
-	})
-
-	return (
-		<FlatList
-			// This prop is necessary to be able to tap the save icon for the list item input,
-			// since tapping outside the input ignores other click events by default.
-			removeClippedSubviews={false}
-			keyboardShouldPersistTaps='always'
-			contentContainerStyle={styles.shoppingListItems}
-			data={shoppingList?.items}
-			keyExtractor={(item) => item}
-			renderItem={(item) => (
-				<ListItem
-					shoppingList={shoppingList}
-					setShoppingList={setShoppingList}
-					itemInfo={item}
-				/>
-			)}
-		/>
-	)
-}
-
-export default List
+export default ListItem
