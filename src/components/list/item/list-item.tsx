@@ -2,8 +2,11 @@ import {useTheme} from '@react-navigation/native'
 import {PropsWithChildren} from 'react'
 import {ListRenderItemInfo, StyleSheet} from 'react-native'
 import Animated, {
+	interpolate,
+	interpolateColor,
 	SharedValue,
 	useAnimatedStyle,
+	useDerivedValue,
 	useSharedValue,
 	withDelay,
 	withSpring
@@ -18,7 +21,7 @@ import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 type ListItemProps = PropsWithChildren<{
 	item: ListRenderItemInfo<any>
 	currentItemPositions: SharedValue<ListItemPositions>
-	isdragging: SharedValue<0 | 1>
+	isDragging: SharedValue<0 | 1>
 	draggingItemId: SharedValue<number>
 }>
 
@@ -27,16 +30,18 @@ export const LIST_ITEM_HEIGHT = 64
 const ListItem = ({
 	children,
 	item,
-	isdragging,
+	isDragging,
 	draggingItemId
 }: ListItemProps) => {
 	const top = useSharedValue(0)
+	const isCurrentDraggingItem = useDerivedValue(() => {
+		return isDragging.value === 1 && draggingItemId.value === item.index
+	})
 
 	const {colors} = useTheme()
 
 	const styles = StyleSheet.create({
 		item: {
-			...theme.dropShadow,
 			flexDirection: 'row',
 			flexWrap: 'wrap',
 			justifyContent: 'space-between',
@@ -50,17 +55,47 @@ const ListItem = ({
 
 	const animatedStyles = useAnimatedStyle(() => {
 		return {
-			top: top.value
+			top: top.value,
+			transform: [
+				{
+					scale: isCurrentDraggingItem.value
+						? interpolate(isDragging.value, [0, 1], [1, 1.025])
+						: interpolate(isDragging.value, [0, 1], [1, 0.98])
+				}
+			],
+			shadowColor: isCurrentDraggingItem.value
+				? interpolateColor(
+						isDragging.value,
+						[0, 1],
+						[colors.primary, colors.text]
+				  )
+				: undefined,
+			shadowOffset: {
+				width: theme.dropShadow.shadowOffset.width,
+				height: isCurrentDraggingItem.value
+					? interpolate(isDragging.value, [0, 1], [0, 7])
+					: theme.dropShadow.shadowOffset.height
+			},
+			shadowOpacity: isCurrentDraggingItem.value
+				? interpolate(isDragging.value, [0, 1], [0, 0.2])
+				: theme.dropShadow.shadowOpacity,
+			shadowRadius: isCurrentDraggingItem.value
+				? interpolate(isDragging.value, [0, 1], [0, 10])
+				: theme.dropShadow.shadowRadius,
+			elevation: isCurrentDraggingItem.value
+				? interpolate(isDragging.value, [0, 1], [0, 5])
+				: theme.dropShadow.elevation,
+			zIndex: isCurrentDraggingItem.value ? 1 : 0
 		}
-	})
+	}, [draggingItemId.value, isDragging.value])
 
 	const gesture = Gesture.Pan()
 		.onStart(() => {
-			isdragging.value = withSpring(1)
+			isDragging.value = withSpring(1)
 			draggingItemId.value = item.index
 		})
 		.onEnd(() => {
-			isdragging.value = withDelay(100, withSpring(0))
+			isDragging.value = withDelay(100, withSpring(0))
 		})
 
 	return (

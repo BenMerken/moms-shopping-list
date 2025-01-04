@@ -55,7 +55,7 @@ const List = ({items, renderItemContent}: ListProps) => {
 					item={item}
 					key={item.item.toString()}
 					currentItemPositions={currentItemPositions}
-					isdragging={isDragging}
+					isDragging={isDragging}
 					draggingItemId={draggingItemId}
 				>
 					{renderItemContent(item)}
