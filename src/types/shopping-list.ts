@@ -1,6 +1,6 @@
-declare type ShoppingListItem = string
+export type ShoppingListItem = string
 
-declare type ShoppingList = {
+export type ShoppingList = {
 	uuid: string
 	name: string
 	items: ShoppingListItem[]

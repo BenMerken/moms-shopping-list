@@ -13,8 +13,7 @@ import Animated, {
 	withSpring
 } from 'react-native-reanimated'
 
-import layout from '@utils/layout'
-import theme from '@utils/theme'
+import theme from '@/utils/theme'
 
 import {ListItemPositions} from '../list'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'

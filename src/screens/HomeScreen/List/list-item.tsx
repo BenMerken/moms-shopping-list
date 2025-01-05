@@ -12,9 +12,11 @@ import {
 	View
 } from 'react-native'
 
-import layout from '@utils/layout'
-import text from '@utils/text'
-import theme from '@utils/theme'
+import {StackParamList} from '@/types/navigation'
+import {ShoppingList} from '@/types/shopping-list'
+import layout from '@/utils/layout'
+import text from '@/utils/text'
+import theme from '@/utils/theme'
 
 import {ListProps} from './list'
 

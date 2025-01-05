@@ -1,6 +1,8 @@
 import {View, ViewStyle} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
+import {WithChildren} from '@/types/with-children'
+
 type SafeAreaContainerProps = {
 	style?: ViewStyle
 }

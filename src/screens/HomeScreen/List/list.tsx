@@ -1,6 +1,8 @@
 import {Dispatch, SetStateAction} from 'react'
 import {FlatList, StyleSheet} from 'react-native'
 
+import {ShoppingList} from '@/types/shopping-list'
+
 import ListItem from './list-item'
 
 export type ListProps = {
