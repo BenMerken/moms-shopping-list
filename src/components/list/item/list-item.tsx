@@ -146,7 +146,11 @@ const ListItem = ({
 				currentItemPositionsDerived.value[draggingItemIdDerived.value]
 					.updatedTop + translationY
 
-			if (newTop < MIN_TOP || newTop > maxTop) {
+			if (
+				currentIndex.value === null ||
+				newTop < MIN_TOP ||
+				newTop > maxTop
+			) {
 				return
 			}
 
