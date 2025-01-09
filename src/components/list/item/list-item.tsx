@@ -67,7 +67,7 @@ const ListItem = ({
 		return draggingItemId.value
 	})
 	const isCurrentDraggingItem = useDerivedValue(() => {
-		return draggingItemId.value
+		return draggingItemId.value === item.index
 	})
 
 	const {colors} = useTheme()
@@ -82,7 +82,8 @@ const ListItem = ({
 			height: LIST_ITEM_HEIGHT,
 			padding: 16,
 			width: '100%',
-			backgroundColor: colors.card
+			backgroundColor: colors.card,
+			shadowOpacity: theme.dropShadow.shadowOpacity
 		}
 	})
 
@@ -114,17 +115,35 @@ const ListItem = ({
 			shadowOffset: {
 				width: theme.dropShadow.shadowOffset.width,
 				height: isCurrentDraggingItem.value
-					? interpolate(isDraggingDerived.value, [0, 1], [0, 7])
+					? interpolate(
+							isDraggingDerived.value,
+							[0, 1],
+							[
+								theme.dropShadow.shadowOffset.height,
+								theme.dropShadow.shadowOffset.height + 2
+							]
+					  )
 					: theme.dropShadow.shadowOffset.height
 			},
-			shadowOpacity: isCurrentDraggingItem.value
-				? interpolate(isDraggingDerived.value, [0, 1], [0, 0.2])
-				: theme.dropShadow.shadowOpacity,
 			shadowRadius: isCurrentDraggingItem.value
-				? interpolate(isDraggingDerived.value, [0, 1], [0, 10])
+				? interpolate(
+						isDraggingDerived.value,
+						[0, 1],
+						[
+							theme.dropShadow.shadowRadius,
+							theme.dropShadow.shadowRadius + 2
+						]
+				  )
 				: theme.dropShadow.shadowRadius,
 			elevation: isCurrentDraggingItem.value
-				? interpolate(isDraggingDerived.value, [0, 1], [0, 5])
+				? interpolate(
+						isDraggingDerived.value,
+						[0, 1],
+						[
+							theme.dropShadow.elevation,
+							theme.dropShadow.elevation + 2
+						]
+				  )
 				: theme.dropShadow.elevation,
 			zIndex: isCurrentDraggingItem.value ? 1 : 0
 		}
