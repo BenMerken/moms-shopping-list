@@ -35,18 +35,15 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 
 	const styles = StyleSheet.create({
 		shoppingListItem: {
-			...theme.dropShadow,
+			flex: 1,
 			flexDirection: 'row',
 			flexWrap: 'wrap',
 			justifyContent: 'space-between',
-			alignItems: 'center',
-			marginBottom: 8,
-			padding: 16,
-			width: layout.window.widthWithMargin,
-			backgroundColor: colors.card
+			alignItems: 'center'
 		},
 		shoppingListItemLeft: {
 			flexDirection: 'row',
+			alignItems: 'center',
 			gap: 16
 		}
 	})
@@ -140,7 +137,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	}, [editing])
 
 	return (
-		<>
+		<View style={styles.shoppingListItem}>
 			<View style={styles.shoppingListItemLeft}>
 				<TouchableOpacity onPress={removeItem}>
 					<FontAwesome name='close' size={24} color={colors.text} />
@@ -162,7 +159,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 					color={colors.text}
 				/>
 			</TouchableOpacity>
-		</>
+		</View>
 	)
 }
 

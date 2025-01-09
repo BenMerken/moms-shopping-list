@@ -80,6 +80,7 @@ const ListItem = ({
 			flexWrap: 'wrap',
 			justifyContent: 'space-between',
 			alignItems: 'center',
+			gap: 16,
 			height: LIST_ITEM_HEIGHT,
 			padding: 16,
 			width: '100%',
