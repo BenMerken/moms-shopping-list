@@ -1,6 +1,8 @@
+import {FontAwesome} from '@expo/vector-icons'
 import {useTheme} from '@react-navigation/native'
 import {PropsWithChildren} from 'react'
-import {ListRenderItemInfo, StyleSheet} from 'react-native'
+import {ListRenderItemInfo, StyleSheet, View} from 'react-native'
+import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import Animated, {
 	interpolate,
 	interpolateColor,
@@ -16,7 +18,6 @@ import Animated, {
 import theme from '@/utils/theme'
 
 import {ListItemPositions} from '../list'
-import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 
 type NullableNumber = number | null
 
@@ -82,8 +83,10 @@ const ListItem = ({
 			height: LIST_ITEM_HEIGHT,
 			padding: 16,
 			width: '100%',
-			backgroundColor: colors.card,
-			shadowOpacity: theme.dropShadow.shadowOpacity
+			backgroundColor: colors.card
+		},
+		dragger: {
+			flex: 0
 		}
 	})
 
@@ -112,36 +115,13 @@ const ListItem = ({
 						[colors.text, colors.primary]
 				  )
 				: colors.text,
-			shadowOffset: {
-				width: theme.dropShadow.shadowOffset.width,
-				height: isCurrentDraggingItem.value
-					? interpolate(
-							isDraggingDerived.value,
-							[0, 1],
-							[
-								theme.dropShadow.shadowOffset.height,
-								theme.dropShadow.shadowOffset.height + 2
-							]
-					  )
-					: theme.dropShadow.shadowOffset.height
-			},
-			shadowRadius: isCurrentDraggingItem.value
-				? interpolate(
-						isDraggingDerived.value,
-						[0, 1],
-						[
-							theme.dropShadow.shadowRadius,
-							theme.dropShadow.shadowRadius + 2
-						]
-				  )
-				: theme.dropShadow.shadowRadius,
 			elevation: isCurrentDraggingItem.value
 				? interpolate(
 						isDraggingDerived.value,
 						[0, 1],
 						[
 							theme.dropShadow.elevation,
-							theme.dropShadow.elevation + 2
+							theme.dropShadow.elevation + 5
 						]
 				  )
 				: theme.dropShadow.elevation,
@@ -256,11 +236,14 @@ const ListItem = ({
 	)
 
 	return (
-		<GestureDetector gesture={gesture}>
-			<Animated.View style={[styles.itemContainer, animatedStyles]}>
-				{children}
-			</Animated.View>
-		</GestureDetector>
+		<Animated.View style={[styles.itemContainer, animatedStyles]}>
+			{children}
+			<GestureDetector gesture={gesture}>
+				<View style={styles.dragger}>
+					<FontAwesome name='bars' size={24} />
+				</View>
+			</GestureDetector>
+		</Animated.View>
 	)
 }
 
