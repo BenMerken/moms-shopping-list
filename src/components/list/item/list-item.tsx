@@ -85,9 +85,6 @@ const ListItem = ({
 			padding: 16,
 			width: '100%',
 			backgroundColor: colors.card
-		},
-		dragger: {
-			flex: 0
 		}
 	})
 
@@ -240,8 +237,8 @@ const ListItem = ({
 		<Animated.View style={[styles.itemContainer, animatedStyles]}>
 			{children}
 			<GestureDetector gesture={gesture}>
-				<View style={styles.dragger}>
-					<FontAwesome name='bars' size={24} />
+				<View>
+					<FontAwesome name='bars' size={16} />
 				</View>
 			</GestureDetector>
 		</Animated.View>

@@ -140,7 +140,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 		<View style={styles.shoppingListItem}>
 			<View style={styles.shoppingListItemLeft}>
 				<TouchableOpacity onPress={removeItem}>
-					<FontAwesome name='close' size={24} color={colors.text} />
+					<FontAwesome name='close' size={16} color={colors.text} />
 				</TouchableOpacity>
 				<TextInput
 					ref={inputRef}
@@ -155,7 +155,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 			<TouchableOpacity onPress={editing ? handleSaveTap : handleEditTap}>
 				<FontAwesome
 					name={editing ? 'check' : 'pencil'}
-					size={24}
+					size={16}
 					color={colors.text}
 				/>
 			</TouchableOpacity>

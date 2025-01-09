@@ -2,7 +2,7 @@ import {FontAwesome} from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {useNavigation, useTheme} from '@react-navigation/native'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
-import {useEffect, useRef, useState} from 'react'
+import {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react'
 import {
 	ListRenderItemInfo,
 	StyleSheet,
@@ -14,13 +14,11 @@ import {
 
 import {StackParamList} from '@/types/navigation'
 import {ShoppingList} from '@/types/shopping-list'
-import layout from '@/utils/layout'
 import text from '@/utils/text'
-import theme from '@/utils/theme'
 
-import {ListProps} from './list'
-
-type ShoppingListItemProps = ListProps & {
+type ShoppingListItemProps = {
+	shoppingLists: ShoppingList[]
+	setShoppingLists: Dispatch<SetStateAction<ShoppingList[]>>
 	item: ListRenderItemInfo<ShoppingList>
 }
 
@@ -44,14 +42,10 @@ const ListItem = ({
 
 	const styles = StyleSheet.create({
 		shoppingListItem: {
-			...theme.dropShadow,
 			flexDirection: 'row',
 			justifyContent: 'space-between',
 			alignItems: 'center',
-			gap: 16,
-			padding: 16,
-			width: layout.window.widthWithMargin,
-			backgroundColor: colors.card
+			gap: 16
 		},
 		listItemTextContainer: {
 			flexShrink: 1
@@ -146,7 +140,7 @@ const ListItem = ({
 			}}
 		>
 			<TouchableOpacity onPress={() => removeListItem(uuid)}>
-				<FontAwesome name='close' color={colors.text} size={24} />
+				<FontAwesome name='close' color={colors.text} size={16} />
 			</TouchableOpacity>
 			<View style={styles.listItemTextContainer}>
 				<TextInput
@@ -167,7 +161,7 @@ const ListItem = ({
 			<TouchableOpacity onPress={editing ? handleSaveTap : handleEditTap}>
 				<FontAwesome
 					name={editing ? 'check' : 'pencil'}
-					size={24}
+					size={16}
 					color={colors.text}
 				/>
 			</TouchableOpacity>

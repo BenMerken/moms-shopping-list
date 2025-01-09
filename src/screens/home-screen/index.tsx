@@ -20,7 +20,8 @@ import layout from '@/utils/layout'
 import text from '@/utils/text'
 import theme from '@/utils/theme'
 
-import List from './List/list'
+import List from '@/components/list/list'
+import ListItem from './list-item/list-item'
 
 type NewListModalContentProps = {
 	addNewShoppingList: (newList: ShoppingList) => void
@@ -96,7 +97,7 @@ const NewListModalContent = ({
 						<FontAwesome
 							name='close'
 							color={colors.text}
-							size={24}
+							size={16}
 						/>
 					</TouchableOpacity>
 				</View>
@@ -184,8 +185,14 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 				<Text>Laden...</Text>
 			) : shoppingLists.length ? (
 				<List
-					shoppingLists={shoppingLists}
-					setShoppingLists={setShoppingLists}
+					items={shoppingLists}
+					renderItemContent={(item) => (
+						<ListItem
+							item={item}
+							shoppingLists={shoppingLists}
+							setShoppingLists={setShoppingLists}
+						/>
+					)}
 				/>
 			) : (
 				<View style={styles.noShoppingListsPlaceholder}>
@@ -204,7 +211,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 					setOpenListModal(true)
 				}}
 			>
-				<FontAwesome name='plus' size={24} color={colors.background} />
+				<FontAwesome name='plus' size={16} color={colors.background} />
 			</TouchableOpacity>
 			<Modal animationType='slide' transparent visible={openNewListModal}>
 				<NewListModalContent
