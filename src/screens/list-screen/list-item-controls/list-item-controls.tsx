@@ -3,7 +3,9 @@ import {useTheme} from '@react-navigation/native'
 import {Dispatch, SetStateAction, useState} from 'react'
 import {Alert, Button, StyleSheet} from 'react-native'
 
-import {CustomTextInput} from '@components/index'
+import {CustomTextInput} from '@/components/index'
+import {ShoppingList} from '@/types/shopping-list'
+
 type NewItemControlsProps = {
 	shoppingList: ShoppingList | undefined
 	setShoppingList: Dispatch<SetStateAction<ShoppingList | undefined>>
