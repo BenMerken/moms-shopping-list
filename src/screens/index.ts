@@ -1,2 +1,2 @@
-export {default as HomeScreen} from './HomeScreen'
-export {default as ListScreen} from './ListScreen'
+export {default as HomeScreen} from './home-screen'
+export {default as ListScreen} from './list-screen'
