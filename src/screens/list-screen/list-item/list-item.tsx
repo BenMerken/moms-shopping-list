@@ -12,9 +12,7 @@ import {
 } from 'react-native'
 
 import {ShoppingList, ShoppingListItem} from '@/types/shopping-list'
-import layout from '@/utils/layout'
 import text from '@/utils/text'
-import theme from '@/utils/theme'
 
 type ListItemProps = {
 	itemInfo: ListRenderItemInfo<ShoppingListItem>

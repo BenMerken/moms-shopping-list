@@ -14,13 +14,13 @@ import {
 import uuid from 'react-native-uuid'
 
 import {CustomTextInput, SafeAreaContainer} from '@/components/index'
+import List from '@/components/list/list'
 import {StackScreenProps} from '@/types/navigation'
 import {ShoppingList} from '@/types/shopping-list'
 import layout from '@/utils/layout'
 import text from '@/utils/text'
 import theme from '@/utils/theme'
 
-import List from '@/components/list/list'
 import ListItem from './list-item/list-item'
 
 type NewListModalContentProps = {
