@@ -21,3 +21,6 @@ npm-debug.*
 
 # macOS
 .DS_Store
+
+# intellij
+.idea/
