@@ -4,19 +4,33 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-01-12
+
+### Added
+
+-   Add `Dialog` component, which shows a modal with a cancel and confirm action.
+-   Use `Dialog` in `HomeScreen` and `ListScreen` for asking user confirmation before deleting shooping lists and shopping list items.
+
+### Fixed
+
+-   Update expo version, and associated npm packages.
+-   Use kebab-casing for file and directory names, so as to avoid file change issues between Windows and POSIX systems.
+-   Update path aliases.
+-   Rename the TS declaration files to regular TS script files, and export the types instead of declaring them, since these are for typing our own code, instead of some external code.
+
 ## [1.2.4] - 2024-07-30
 
 ### Fixed
 
-- Upgrade Node.js version to `20.16.0` in `.nvmrc`.
+-   Upgrade Node.js version to `20.16.0` in `.nvmrc`.
 
 ## [1.2.3] - 2024-07-30
 
 ### Fixed
 
-- Upgrade the Expo framework version to 51.
-- Upgrade npm depenedencies, in order to fix vulnerabilities.
-- Remove `eas-cli`, because of unfixable vulnerabilities with `dicer` and `semver`, so from now on, install and maintain the `eas-cli` globally.
+-   Upgrade the Expo framework version to 51.
+-   Upgrade npm depenedencies, in order to fix vulnerabilities.
+-   Remove `eas-cli`, because of unfixable vulnerabilities with `dicer` and `semver`, so from now on, install and maintain the `eas-cli` globally.
 
 ## [1.2.2] - 2023-11-08
 
