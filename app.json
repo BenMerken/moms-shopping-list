@@ -2,13 +2,13 @@
   "expo": {
     "name": "Mijn boodschappen",
     "slug": "moms-shopping-list",
-	"description": "A simple shopping list app for my mother",
-	"owner": "benmerken",
+    "description": "A simple shopping list app for my mother",
+    "owner": "benm1995",
     "version": "1.2.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "afrnt",
-	"userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -32,7 +32,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "54c3badc-2381-4c51-9c32-cc8b6d4cc7de"
+        "projectId": "b5bfa206-7f75-4261-8c89-055d5e189fdd"
       }
     }
   }
