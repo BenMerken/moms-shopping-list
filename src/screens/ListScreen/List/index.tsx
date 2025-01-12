@@ -16,6 +16,7 @@ import {ShoppingList, ShoppingListItem} from '@/types/shopping-list'
 import layout from '@/utils/layout'
 import text from '@/utils/text'
 import theme from '@/utils/theme'
+import Dialog from '@/components/dialog/dialog'
 
 type ListProps = {
 	shoppingList: ShoppingList
@@ -34,6 +35,7 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	// Directly focusing the input should not be possible, to prevent the keyboard from sliding in, by accidently tapping the input field.
 	const [editing, setEditing] = useState(false)
 	const [itemValue, setItemValue] = useState(item)
+	const [showRemoveDialog, setShowRemoveDialog] = useState(false)
 
 	const inputRef = useRef<TextInput>(null)
 
@@ -146,29 +148,44 @@ const ListItem = ({itemInfo, shoppingList, setShoppingList}: ListItemProps) => {
 	}, [editing])
 
 	return (
-		<View style={styles.shoppingListItem}>
-			<View style={styles.shoppingListItemLeft}>
-				<TouchableOpacity onPress={removeItem}>
-					<FontAwesome name='close' size={24} color={colors.text} />
+		<>
+			<View style={styles.shoppingListItem}>
+				<View style={styles.shoppingListItemLeft}>
+					<TouchableOpacity onPress={() => setShowRemoveDialog(true)}>
+						<FontAwesome
+							name='close'
+							size={24}
+							color={colors.text}
+						/>
+					</TouchableOpacity>
+					<TextInput
+						ref={inputRef}
+						editable={editing}
+						style={{...text.text, color: colors.text}}
+						value={itemValue}
+						onChangeText={handleItemTextChange}
+						onBlur={handleInputBlur}
+						onSubmitEditing={handleSaveTap}
+					/>
+				</View>
+				<TouchableOpacity
+					onPress={editing ? handleSaveTap : handleEditTap}
+				>
+					<FontAwesome
+						name={editing ? 'check' : 'pencil'}
+						size={24}
+						color={colors.text}
+					/>
 				</TouchableOpacity>
-				<TextInput
-					ref={inputRef}
-					editable={editing}
-					style={{...text.text, color: colors.text}}
-					value={itemValue}
-					onChangeText={handleItemTextChange}
-					onBlur={handleInputBlur}
-					onSubmitEditing={handleSaveTap}
-				/>
 			</View>
-			<TouchableOpacity onPress={editing ? handleSaveTap : handleEditTap}>
-				<FontAwesome
-					name={editing ? 'check' : 'pencil'}
-					size={24}
-					color={colors.text}
+			{showRemoveDialog && (
+				<Dialog
+					text={`Weet je zeker dat je "${item}" wilt verwijderen?`}
+					reset={() => setShowRemoveDialog(false)}
+					action={() => removeItem()}
 				/>
-			</TouchableOpacity>
-		</View>
+			)}
+		</>
 	)
 }
 
