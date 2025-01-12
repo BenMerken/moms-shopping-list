@@ -12,11 +12,10 @@ import {
 	View
 } from 'react-native'
 
+import {Dialog} from '@/components/index'
 import {StackParamList} from '@/types/navigation'
 import {ShoppingList} from '@/types/shopping-list'
 import text from '@/utils/text'
-import theme from '@/utils/theme'
-import Dialog from '@/components/dialog/dialog'
 
 type ShoppingListItemProps = {
 	shoppingLists: ShoppingList[]

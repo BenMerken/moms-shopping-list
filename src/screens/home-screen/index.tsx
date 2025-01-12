@@ -13,8 +13,7 @@ import {
 } from 'react-native'
 import uuid from 'react-native-uuid'
 
-import {CustomTextInput, SafeAreaContainer} from '@/components/index'
-import List from '@/components/list/list'
+import {CustomTextInput, List, SafeAreaContainer} from '@/components/index'
 import {StackScreenProps} from '@/types/navigation'
 import {ShoppingList} from '@/types/shopping-list'
 import layout from '@/utils/layout'
