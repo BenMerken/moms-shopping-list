@@ -15,6 +15,8 @@ import {
 import {StackParamList} from '@/types/navigation'
 import {ShoppingList} from '@/types/shopping-list'
 import text from '@/utils/text'
+import theme from '@/utils/theme'
+import Dialog from '@/components/dialog/dialog'
 
 type ShoppingListItemProps = {
 	shoppingLists: ShoppingList[]
@@ -37,6 +39,7 @@ const ListItem = ({
 
 	const [listName, setListName] = useState(name)
 	const [editing, setEditing] = useState(false)
+	const [showRemoveDialog, setShowRemoveDialog] = useState(false)
 
 	const inputRef = useRef<TextInput>(null)
 
@@ -128,44 +131,58 @@ const ListItem = ({
 	}, [editing])
 
 	return (
-		<TouchableOpacity
-			style={styles.shoppingListItem}
-			onPress={(e) => {
-				e.preventDefault()
-				e.stopPropagation()
-				navigate('List', {
-					listUuid: uuid,
-					listName: name
-				})
-			}}
-		>
-			<TouchableOpacity onPress={() => removeListItem(uuid)}>
-				<FontAwesome name='close' color={colors.text} size={16} />
+		<>
+			<TouchableOpacity
+				style={styles.shoppingListItem}
+				onPress={(e) => {
+					e.preventDefault()
+					e.stopPropagation()
+					navigate('List', {
+						listUuid: uuid,
+						listName: name
+					})
+				}}
+			>
+				<TouchableOpacity onPress={() => setShowRemoveDialog(true)}>
+					<FontAwesome name='close' color={colors.text} size={16} />
+				</TouchableOpacity>
+				<View style={styles.listItemTextContainer}>
+					<TextInput
+						ref={inputRef}
+						editable={editing}
+						style={styles.shoppingListName}
+						value={listName}
+						onChangeText={handleItemTextChange}
+						onBlur={handleInputBlur}
+						onSubmitEditing={handleSaveTap}
+					/>
+					<Text style={{...text.text, color: colors.text}}>
+						{`aangemaakt op ${createdAtDate.toLocaleDateString(
+							'nl-BE'
+						)}, om ${createdAtDate.toLocaleTimeString('nl-BE')}`}
+					</Text>
+				</View>
+				<TouchableOpacity
+					onPress={editing ? handleSaveTap : handleEditTap}
+				>
+					<FontAwesome
+						name={editing ? 'check' : 'pencil'}
+						size={16}
+						color={colors.text}
+					/>
+				</TouchableOpacity>
 			</TouchableOpacity>
-			<View style={styles.listItemTextContainer}>
-				<TextInput
-					ref={inputRef}
-					editable={editing}
-					style={styles.shoppingListName}
-					value={listName}
-					onChangeText={handleItemTextChange}
-					onBlur={handleInputBlur}
-					onSubmitEditing={handleSaveTap}
+			{showRemoveDialog && (
+				<Dialog
+					text='Weet je zeker dat je dit lijstje wilt verwijderen?'
+					reset={() => setShowRemoveDialog(false)}
+					action={() => {
+						removeListItem(uuid)
+						setShowRemoveDialog(false)
+					}}
 				/>
-				<Text style={{...text.text, color: colors.text}}>
-					{`aangemaakt op ${createdAtDate.toLocaleDateString(
-						'nl-BE'
-					)}, om ${createdAtDate.toLocaleTimeString('nl-BE')}`}
-				</Text>
-			</View>
-			<TouchableOpacity onPress={editing ? handleSaveTap : handleEditTap}>
-				<FontAwesome
-					name={editing ? 'check' : 'pencil'}
-					size={16}
-					color={colors.text}
-				/>
-			</TouchableOpacity>
-		</TouchableOpacity>
+			)}
+		</>
 	)
 }
 
