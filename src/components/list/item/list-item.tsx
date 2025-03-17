@@ -235,7 +235,7 @@ const ListItem = ({
 			{children}
 			<GestureDetector gesture={gesture}>
 				<View>
-					<FontAwesome name='bars' size={16} />
+					<FontAwesome name='bars' size={16} color={colors.text} />
 				</View>
 			</GestureDetector>
 		</Animated.View>
