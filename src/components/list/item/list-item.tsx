@@ -27,10 +27,10 @@ type ListItemProps = PropsWithChildren<{
 	isDragging: SharedValue<0 | 1>
 	draggingItemId: SharedValue<number>
 	maxTop: number
+	itemHeight: number
+	itemHeightWithMargin: number
 }>
 
-export const LIST_ITEM_HEIGHT = 72
-export const LIST_ITEM_HEIGHT_WITH_MARGIN = LIST_ITEM_HEIGHT + 24
 const MIN_TOP = 0
 
 const getKeyOfValue = (
@@ -53,7 +53,9 @@ const ListItem = ({
 	currentItemPositions,
 	isDragging,
 	draggingItemId,
-	maxTop
+	maxTop,
+	itemHeight,
+	itemHeightWithMargin
 }: ListItemProps) => {
 	const top = useSharedValue(0)
 	const newIndex = useSharedValue<NullableNumber>(null)
@@ -81,7 +83,7 @@ const ListItem = ({
 			justifyContent: 'space-between',
 			alignItems: 'center',
 			gap: 16,
-			height: LIST_ITEM_HEIGHT,
+			height: itemHeight,
 			padding: 16,
 			width: '100%',
 			backgroundColor: colors.card
@@ -153,8 +155,7 @@ const ListItem = ({
 
 			top.value = newTop
 			newIndex.value = Math.floor(
-				(newTop + LIST_ITEM_HEIGHT_WITH_MARGIN / 2) /
-					LIST_ITEM_HEIGHT_WITH_MARGIN
+				(newTop + itemHeightWithMargin / 2) / itemHeightWithMargin
 			)
 
 			if (newIndex.value !== currentIndex.value) {
@@ -176,8 +177,7 @@ const ListItem = ({
 							],
 							updatedIndex: currentIndex.value,
 							updatedTop:
-								currentIndex.value *
-								LIST_ITEM_HEIGHT_WITH_MARGIN
+								currentIndex.value * itemHeightWithMargin
 						},
 						[currentIndexItemKey]: {
 							...currentItemPositionsDerived.value[
@@ -196,9 +196,7 @@ const ListItem = ({
 				return
 			}
 
-			top.value = withSpring(
-				newIndex.value * LIST_ITEM_HEIGHT_WITH_MARGIN
-			)
+			top.value = withSpring(newIndex.value * itemHeightWithMargin)
 
 			const currentDragIndexItemKey = getKeyOfValue(
 				currentIndex.value,
@@ -212,8 +210,7 @@ const ListItem = ({
 						...currentItemPositionsDerived.value[
 							currentDragIndexItemKey
 						],
-						updatedTop:
-							newIndex.value * LIST_ITEM_HEIGHT_WITH_MARGIN
+						updatedTop: newIndex.value * itemHeightWithMargin
 					}
 				}
 			}
@@ -228,7 +225,7 @@ const ListItem = ({
 			if (currentValue !== previousValue) {
 				top.value =
 					currentItemPositionsDerived.value[item.index].updatedIndex *
-					LIST_ITEM_HEIGHT_WITH_MARGIN
+					itemHeightWithMargin
 			}
 		}
 	)

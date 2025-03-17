@@ -14,6 +14,7 @@ import {
 import uuid from 'react-native-uuid'
 
 import {CustomTextInput, List, SafeAreaContainer} from '@/components/index'
+import {DEFAULT_LIST_ITEM_HEIGHT} from '@/components/list/list'
 import {StackScreenProps} from '@/types/navigation'
 import {ShoppingList} from '@/types/shopping-list'
 import layout from '@/utils/layout'
@@ -192,6 +193,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 							setShoppingLists={setShoppingLists}
 						/>
 					)}
+					listItemHeight={DEFAULT_LIST_ITEM_HEIGHT * 1.4}
 				/>
 			) : (
 				<View style={styles.noShoppingListsPlaceholder}>
