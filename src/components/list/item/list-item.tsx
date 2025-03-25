@@ -79,7 +79,6 @@ const ListItem = ({
 		itemContainer: {
 			position: 'absolute',
 			flexDirection: 'row',
-			flexWrap: 'wrap',
 			justifyContent: 'space-between',
 			alignItems: 'center',
 			gap: 16,
@@ -87,6 +86,10 @@ const ListItem = ({
 			padding: 16,
 			width: '100%',
 			backgroundColor: colors.card
+		},
+		contentContainer: {
+			flexShrink: 1,
+			flexGrow: 1
 		}
 	})
 
@@ -232,7 +235,7 @@ const ListItem = ({
 
 	return (
 		<Animated.View style={[styles.itemContainer, animatedStyles]}>
-			{children}
+			<View style={styles.contentContainer}>{children}</View>
 			<GestureDetector gesture={gesture}>
 				<View>
 					<FontAwesome name='bars' size={16} color={colors.text} />
