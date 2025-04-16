@@ -60,15 +60,15 @@ const ListItem = ({
 	const top = useSharedValue(0)
 	const newIndex = useSharedValue<NullableNumber>(null)
 	const currentIndex = useSharedValue<NullableNumber>(null)
+
 	const currentItemPositionsDerived = useDerivedValue(() => {
 		return currentItemPositions.value
 	})
+
 	const isDraggingDerived = useDerivedValue(() => {
 		return isDragging.value
 	})
-	const draggingItemIdDerived = useDerivedValue(() => {
-		return draggingItemId.value
-	})
+
 	const isCurrentDraggingItem = useDerivedValue(() => {
 		return draggingItemId.value === item.index
 	})
@@ -130,7 +130,7 @@ const ListItem = ({
 				: theme.dropShadow.elevation,
 			zIndex: isCurrentDraggingItem.value ? 1 : 0
 		}
-	}, [top.value, isCurrentDraggingItem.value, isDraggingDerived.value])
+	})
 
 	const gesture = Gesture.Pan()
 		.onStart(() => {
@@ -140,12 +140,12 @@ const ListItem = ({
 				currentItemPositionsDerived.value[item.index].updatedIndex
 		})
 		.onUpdate(({translationY}) => {
-			if (draggingItemIdDerived.value === null) {
+			if (draggingItemId.value === null) {
 				return
 			}
 
 			const newTop =
-				currentItemPositionsDerived.value[draggingItemIdDerived.value]
+				currentItemPositionsDerived.value[draggingItemId.value]
 					.updatedTop + translationY
 
 			if (
