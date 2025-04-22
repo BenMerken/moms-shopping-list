@@ -61,14 +61,6 @@ const ListItem = ({
 	const newIndex = useSharedValue<NullableNumber>(null)
 	const currentIndex = useSharedValue<NullableNumber>(null)
 
-	const currentItemPositionsDerived = useDerivedValue(() => {
-		return currentItemPositions.value
-	})
-
-	const isDraggingDerived = useDerivedValue(() => {
-		return isDragging.value
-	})
-
 	const isCurrentDraggingItem = useDerivedValue(() => {
 		return draggingItemId.value === item.index
 	})
@@ -99,28 +91,20 @@ const ListItem = ({
 			transform: [
 				{
 					scale: isCurrentDraggingItem.value
-						? interpolate(
-								isDraggingDerived.value,
-								[0, 1],
-								[1, 1.025]
-						  )
-						: interpolate(
-								isDraggingDerived.value,
-								[0, 1],
-								[1, 0.98]
-						  )
+						? interpolate(isDragging.value, [0, 1], [1, 1.025])
+						: interpolate(isDragging.value, [0, 1], [1, 0.98])
 				}
 			],
 			shadowColor: isCurrentDraggingItem.value
 				? interpolateColor(
-						isDraggingDerived.value,
+						isDragging.value,
 						[0, 1],
 						[colors.text, colors.primary]
 				  )
 				: colors.text,
 			elevation: isCurrentDraggingItem.value
 				? interpolate(
-						isDraggingDerived.value,
+						isDragging.value,
 						[0, 1],
 						[
 							theme.dropShadow.elevation,
@@ -137,7 +121,7 @@ const ListItem = ({
 			isDragging.value = withSpring(1)
 			draggingItemId.value = item.index
 			currentIndex.value =
-				currentItemPositionsDerived.value[item.index].updatedIndex
+				currentItemPositions.value[item.index].updatedIndex
 		})
 		.onUpdate(({translationY}) => {
 			if (draggingItemId.value === null) {
@@ -145,8 +129,8 @@ const ListItem = ({
 			}
 
 			const newTop =
-				currentItemPositionsDerived.value[draggingItemId.value]
-					.updatedTop + translationY
+				currentItemPositions.value[draggingItemId.value].updatedTop +
+				translationY
 
 			if (
 				currentIndex.value === null ||
@@ -164,28 +148,24 @@ const ListItem = ({
 			if (newIndex.value !== currentIndex.value) {
 				const newIndexItemKey = getKeyOfValue(
 					newIndex.value,
-					currentItemPositionsDerived.value
+					currentItemPositions.value
 				)
 				const currentIndexItemKey = getKeyOfValue(
 					currentIndex.value,
-					currentItemPositionsDerived.value
+					currentItemPositions.value
 				)
 
 				if (newIndexItemKey !== null && currentIndexItemKey !== null) {
 					currentItemPositions.value = {
-						...currentItemPositionsDerived.value,
+						...currentItemPositions.value,
 						[newIndexItemKey]: {
-							...currentItemPositionsDerived.value[
-								newIndexItemKey
-							],
+							...currentItemPositions.value[newIndexItemKey],
 							updatedIndex: currentIndex.value,
 							updatedTop:
 								currentIndex.value * itemHeightWithMargin
 						},
 						[currentIndexItemKey]: {
-							...currentItemPositionsDerived.value[
-								currentIndexItemKey
-							],
+							...currentItemPositions.value[currentIndexItemKey],
 							updatedIndex: newIndex.value
 						}
 					}
@@ -203,16 +183,14 @@ const ListItem = ({
 
 			const currentDragIndexItemKey = getKeyOfValue(
 				currentIndex.value,
-				currentItemPositionsDerived.value
+				currentItemPositions.value
 			)
 
 			if (currentDragIndexItemKey !== null) {
 				currentItemPositions.value = {
-					...currentItemPositionsDerived.value,
+					...currentItemPositions.value,
 					[currentDragIndexItemKey]: {
-						...currentItemPositionsDerived.value[
-							currentDragIndexItemKey
-						],
+						...currentItemPositions.value[currentDragIndexItemKey],
 						updatedTop: newIndex.value * itemHeightWithMargin
 					}
 				}
@@ -222,12 +200,12 @@ const ListItem = ({
 
 	useAnimatedReaction(
 		() => {
-			return currentItemPositionsDerived.value[item.index].updatedIndex
+			return currentItemPositions.value[item.index].updatedIndex
 		},
 		(currentValue, previousValue) => {
 			if (currentValue !== previousValue) {
 				top.value =
-					currentItemPositionsDerived.value[item.index].updatedIndex *
+					currentItemPositions.value[item.index].updatedIndex *
 					itemHeightWithMargin
 			}
 		}
