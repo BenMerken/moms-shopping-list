@@ -214,23 +214,29 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 			>
 				<FontAwesome name='plus' size={16} color={colors.background} />
 			</TouchableOpacity>
-			<Modal animationType='slide' transparent visible={openNewListModal}>
-				<NewListModalContent
-					closeModal={() => setOpenListModal(false)}
-					addNewShoppingList={(newList) =>
-						setShoppingLists([newList, ...shoppingLists])
-					}
-					navigateToNewShoppingListScreen={(
-						newListUuid,
-						newListName
-					) =>
-						navigation.navigate('List', {
-							listUuid: newListUuid,
-							listName: newListName
-						})
-					}
-				/>
-			</Modal>
+			<View>
+				<Modal
+					animationType='slide'
+					transparent
+					visible={openNewListModal}
+				>
+					<NewListModalContent
+						closeModal={() => setOpenListModal(false)}
+						addNewShoppingList={(newList) =>
+							setShoppingLists([newList, ...shoppingLists])
+						}
+						navigateToNewShoppingListScreen={(
+							newListUuid,
+							newListName
+						) =>
+							navigation.navigate('List', {
+								listUuid: newListUuid,
+								listName: newListName
+							})
+						}
+					/>
+				</Modal>
+			</View>
 		</SafeAreaContainer>
 	)
 }
