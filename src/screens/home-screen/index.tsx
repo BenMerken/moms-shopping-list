@@ -174,8 +174,9 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 				)
 			}
 
-			getShoppingListsFromStorage()
-			setLoadingShoppingLists(false)
+			getShoppingListsFromStorage().then(() => {
+				setLoadingShoppingLists(false)
+			})
 		}
 	}, [isFocused])
 
