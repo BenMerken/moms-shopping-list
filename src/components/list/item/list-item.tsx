@@ -21,10 +21,11 @@ import {ListItemPositions} from '../list'
 
 type NullableNumber = number | null
 
-type ListItemProps = PropsWithChildren<{
-	item: ListRenderItemInfo<any>
+type ListItemProps<T> = PropsWithChildren<{
+	item: ListRenderItemInfo<T>
 	currentItemPositions: SharedValue<ListItemPositions>
 	isDragging: SharedValue<0 | 1>
+	onDragEnd?: (item: ListRenderItemInfo<T>) => void
 	draggingItemId: SharedValue<number>
 	maxTop: number
 	itemHeight: number
@@ -47,7 +48,7 @@ const getKeyOfValue = (
 	return null
 }
 
-const ListItem = ({
+function ListItem<T>({
 	children,
 	item,
 	currentItemPositions,
@@ -56,7 +57,7 @@ const ListItem = ({
 	maxTop,
 	itemHeight,
 	itemHeightWithMargin
-}: ListItemProps) => {
+}: ListItemProps<T>) {
 	const top = useSharedValue(0)
 	const newIndex = useSharedValue<NullableNumber>(null)
 	const currentIndex = useSharedValue<NullableNumber>(null)

@@ -1,8 +1,12 @@
 export type ShoppingListItem = string
 
-export type ShoppingList = {
+type BaseProps = {
 	uuid: string
 	name: string
-	items: ShoppingListItem[]
 	createdAt: number
+	position: number
+}
+
+export type ShoppingList = BaseProps & {
+	items: ShoppingListItem[]
 }

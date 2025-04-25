@@ -5,10 +5,11 @@ import {useSharedValue} from 'react-native-reanimated'
 
 import ListItem from './item/list-item'
 
-type ListProps = {
-	items: any[]
-	renderItemContent: (item: ListRenderItemInfo<any>) => ReactElement
+type ListProps<T> = {
+	items: T[]
+	renderItemContent: (item: ListRenderItemInfo<T>) => ReactElement
 	listItemHeight?: number
+	onItemDragEnd?: (item: ListRenderItemInfo<T>) => void
 }
 
 export type ListItemPositions = {
@@ -36,11 +37,12 @@ const getInitialListItemPositions = (
 	return initialListItemPositions
 }
 
-const List = ({
+function List<T>({
 	items,
 	renderItemContent,
-	listItemHeight = DEFAULT_LIST_ITEM_HEIGHT
-}: ListProps) => {
+	listItemHeight = DEFAULT_LIST_ITEM_HEIGHT,
+	onItemDragEnd
+}: ListProps<T>) {
 	const listItemHeightWithMargin = listItemHeight + 24
 
 	const currentItemPositions = useSharedValue<ListItemPositions>(
@@ -67,7 +69,7 @@ const List = ({
 			renderItem={(item) => (
 				<ListItem
 					item={item}
-					key={item.item.toString()}
+					key={String(item.item)}
 					currentItemPositions={currentItemPositions}
 					isDragging={isDragging}
 					draggingItemId={draggingItemId}
