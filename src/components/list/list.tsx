@@ -73,6 +73,7 @@ function List<T>({
 					currentItemPositions={currentItemPositions}
 					isDragging={isDragging}
 					draggingItemId={draggingItemId}
+					onDragEnd={onItemDragEnd}
 					maxTop={(items.length - 1) * listItemHeightWithMargin}
 					itemHeight={listItemHeight}
 					itemHeightWithMargin={listItemHeightWithMargin}

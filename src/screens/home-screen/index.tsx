@@ -5,6 +5,7 @@ import {useEffect, useState} from 'react'
 import {
 	Alert,
 	Button,
+	ListRenderItemInfo,
 	Modal,
 	StyleSheet,
 	Text,
@@ -24,6 +25,7 @@ import theme from '@/utils/theme'
 import ListItem from './list-item/list-item'
 
 type NewListModalContentProps = {
+	listLength: number
 	addNewShoppingList: (newList: ShoppingList) => void
 	closeModal: () => void
 	navigateToNewShoppingListScreen: (
@@ -35,7 +37,8 @@ type NewListModalContentProps = {
 const NewListModalContent = ({
 	addNewShoppingList,
 	closeModal,
-	navigateToNewShoppingListScreen
+	navigateToNewShoppingListScreen,
+	listLength
 }: NewListModalContentProps) => {
 	const {colors} = useTheme()
 
@@ -70,7 +73,8 @@ const NewListModalContent = ({
 				uuid: newListUuid,
 				name: newListName,
 				items: [],
-				createdAt: Date.now()
+				createdAt: Date.now(),
+				position: listLength
 			}
 
 			await AsyncStorage.setItem(newListUuid, JSON.stringify(newList))
@@ -156,22 +160,41 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 		}
 	})
 
+	const updateListPositions = (
+		draggedItem: ListRenderItemInfo<ShoppingList>
+	) => {
+		let shoppingListsCopy = [
+			...shoppingLists.filter(
+				(list) => list.uuid !== draggedItem.item.uuid
+			)
+		]
+		shoppingListsCopy.splice(draggedItem.index, 0, draggedItem.item)
+		shoppingListsCopy = shoppingListsCopy.map((list, index) => ({
+			...list,
+			position: index
+		}))
+
+		setShoppingLists(shoppingListsCopy)
+	}
+
 	// Get the shopping lists in app storage, and add them to the component's state, if the Home screen becomes focused.
 	useEffect(() => {
 		if (isFocused) {
 			const getShoppingListsFromStorage = async () => {
 				const shoppingListsKeys = await AsyncStorage.getAllKeys()
-				const shoppingListsFromStorage = (await AsyncStorage.multiGet(
-					shoppingListsKeys
-				).then((storage) =>
-					storage.map((d) => d[1] && JSON.parse(d[1]))
-				)) as ShoppingList[]
+				const shoppingListsFromStorage = (
+					(await AsyncStorage.multiGet(shoppingListsKeys).then(
+						(storage) =>
+							storage.map((d) => d[1] && JSON.parse(d[1]))
+					)) as ShoppingList[]
+				).map((list) => {
+					if (!list.position) {
+						list.position = 0
+					}
+					return list
+				})
 
-				setShoppingLists(
-					shoppingListsFromStorage.sort((a, b) =>
-						a.createdAt > b.createdAt ? -1 : 0
-					)
-				)
+				setShoppingLists(shoppingListsFromStorage)
 			}
 
 			getShoppingListsFromStorage().then(() => {
@@ -180,13 +203,17 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 		}
 	}, [isFocused])
 
+	console.log(shoppingLists)
+
 	return (
 		<SafeAreaContainer>
 			{loadingShoppingLists ? (
 				<Text>Laden...</Text>
 			) : shoppingLists.length ? (
 				<List
-					items={shoppingLists}
+					items={shoppingLists.sort(
+						(a, b) => a.position - b.position
+					)}
 					renderItemContent={(item) => (
 						<ListItem
 							item={item}
@@ -195,6 +222,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 						/>
 					)}
 					listItemHeight={DEFAULT_LIST_ITEM_HEIGHT * 1.4}
+					onItemDragEnd={updateListPositions}
 				/>
 			) : (
 				<View style={styles.noShoppingListsPlaceholder}>
@@ -235,6 +263,7 @@ const HomeScreen = ({navigation}: StackScreenProps<'Home'>) => {
 								listName: newListName
 							})
 						}
+						listLength={shoppingLists.length}
 					/>
 				</Modal>
 			</View>

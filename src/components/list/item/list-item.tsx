@@ -6,6 +6,7 @@ import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import Animated, {
 	interpolate,
 	interpolateColor,
+	runOnJS,
 	SharedValue,
 	useAnimatedReaction,
 	useAnimatedStyle,
@@ -53,6 +54,7 @@ function ListItem<T>({
 	item,
 	currentItemPositions,
 	isDragging,
+	onDragEnd,
 	draggingItemId,
 	maxTop,
 	itemHeight,
@@ -197,6 +199,11 @@ function ListItem<T>({
 				}
 			}
 			isDragging.value = withDelay(100, withSpring(0))
+
+			if (onDragEnd) {
+				// Must be explicitly run on the JavaScript thread, because JS functions are not serializable, and cannot be run on the UI thread.
+				runOnJS(onDragEnd)({...item, index: newIndex.value})
+			}
 		})
 
 	useAnimatedReaction(
