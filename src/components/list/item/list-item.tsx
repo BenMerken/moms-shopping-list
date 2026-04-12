@@ -41,7 +41,7 @@ const getKeyOfValue = (
 ): NullableNumber => {
 	'worklet'
 	for (const [key, val] of Object.entries(object)) {
-		if (val.updatedIndex === value) {
+		if (val?.updatedIndex === value) {
 			return parseInt(key)
 		}
 	}
@@ -208,10 +208,13 @@ function ListItem<T>({
 
 	useAnimatedReaction(
 		() => {
-			return currentItemPositions.value[item.index].updatedIndex
+			return currentItemPositions.value[item.index]?.updatedIndex
 		},
 		(currentValue, previousValue) => {
-			if (currentValue !== previousValue) {
+			if (
+				currentValue !== previousValue &&
+				currentItemPositions.value[item.index] !== undefined
+			) {
 				top.value =
 					currentItemPositions.value[item.index].updatedIndex *
 					itemHeightWithMargin
