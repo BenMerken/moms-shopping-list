@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - TBD
+
+This release is a complete rewrite of the app:
+
+-   All previously user-written code was deleted, and the feature set was rebuilt from scratch, aiming for more idiomatic and understandable code.
+-   The project's dependencies were re-evaluated and updated, patching vulnerabilities in the process.
+
+I could have started a completely new code project, and sunset this one, but I decided to keep the old history around for comparison's sake. Who knows, maybe over the years, some of my work life's experience might've rubbed off on me, and this new version might actually reflect that...
+
 ## [1.3.2] - 2025-04-02
 
 ### Fixed
