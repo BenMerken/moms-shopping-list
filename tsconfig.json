@@ -6,7 +6,6 @@
 		"isolatedModules": true,
 		"incremental": true,
 		"sourceMap": true,
-		"baseUrl": "src",
 		"noImplicitAny": true
 	}
 }
