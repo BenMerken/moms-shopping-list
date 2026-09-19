@@ -1,9 +1,8 @@
-import {registerRootComponent} from 'expo'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 
 import {Text} from 'react-native'
 
-const App = () => {
+const Page = () => {
 	return (
 		<SafeAreaProvider>
 			<Text>App works!</Text>
@@ -11,4 +10,4 @@ const App = () => {
 	)
 }
 
-registerRootComponent(App)
+export default Page

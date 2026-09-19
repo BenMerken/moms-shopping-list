@@ -10,6 +10,7 @@ This release is a complete rewrite of the app:
 
 -   All previously user-written code was deleted, and the feature set was rebuilt from scratch, aiming for more idiomatic and understandable code.
 -   The project's dependencies were re-evaluated and updated, patching vulnerabilities in the process.
+-   The project adheres as close as possible to Expo's best practices
 
 I could have started a completely new code project, and sunset this one, but I decided to keep the old history around for comparison's sake. Who knows, maybe over the years, some of my work life's experience might've rubbed off on me, and this new version might actually reflect that...
 
